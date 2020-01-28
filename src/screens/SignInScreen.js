@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { StyleSheet, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, ActivityIndicator, View} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 
@@ -14,6 +14,9 @@ const SignInScreen = ({navigation}) => {
   const {state, signin, clearErrorMessage } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+
+  // console.log("state", state)
 
   return (
     <View style={styles.container}>
@@ -41,10 +44,10 @@ const SignInScreen = ({navigation}) => {
       <Button 
           title="Sign Up"
           onPress={() => signin({username, password})}
-          // onPress={() => console.log(222222222222222222222222222222222222)}
       >
 
           </Button>
+          <ActivityIndicator size="large" color="#0000ff" />
       </Spacer>
     </View>
   );
