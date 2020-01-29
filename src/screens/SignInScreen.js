@@ -14,16 +14,14 @@ const SignInScreen = ({navigation}) => {
   const {state, signin, clearErrorMessage } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-
-  // console.log("state", state)
+  
 
   return (
     <View style={styles.container}>
       <NavigationEvents 
         onWillBlur={clearErrorMessage}/>
       <Spacer>
-      <Text h3>SignInScreen screeneeee fro tracker</Text>
+      <Text h3>CIES APP</Text>
       </Spacer>
       <Input 
           label="username" 
@@ -40,14 +38,14 @@ const SignInScreen = ({navigation}) => {
           autoCorrect={false}
           />
         {state.errorMessage ? <Text  style={styles.errorMessage}>{state.errorMessage}</Text>: null}
+        {state.loading ? <ActivityIndicator size="large" color="#0000ff" />: null}
       <Spacer>
       <Button 
-          title="Sign Up"
+          title="Iniciar Seccion"
           onPress={() => signin({username, password})}
       >
 
-          </Button>
-          <ActivityIndicator size="large" color="#0000ff" />
+      </Button>
       </Spacer>
     </View>
   );

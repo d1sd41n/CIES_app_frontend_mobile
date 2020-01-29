@@ -2,21 +2,22 @@ import { AsyncStorage } from 'react-native';
 
 import {navigate} from '../navigationRef';
 import createDataContext from './createDataContext';
-import trackerApi from '../api/tracker';
 
 import axios from 'axios';
 
 
 const authReducer = (state, action) => {
     switch (action.type) {
+        case 'loading':
+            return {...state, loading: true};
         case 'add_error':
-            return {...state, errorMessage: action.payload};
+            return {...state, errorMessage: action.payload, loading: false};
         case 'signin':
-            return {errorMessage: '', token: action.payload};
+            return {errorMessage: '', token: action.payload, loading: false};
         case 'signout':
             return {errorMessage: '', token: null};
         case 'clear_error_message':
-            return {...state, rrorMessage: ''};
+            return {...state, errorMessage: '', loading: false};
         default:
             return state;
     }
@@ -35,9 +36,7 @@ const tryLocalSignin = dispatch => async () => {
 
 
 const signin = (dispatch) =>  ({username, password}) => {
-    console.log("miiieffff34343334343434343434fffaaaaa")
-    console.log(username)
-    console.log(password)
+    dispatch({type: 'loading'});
 
     const headers = {
         'Content-Type': 'application/json',
@@ -48,9 +47,6 @@ const signin = (dispatch) =>  ({username, password}) => {
         password: password
     }, {headers})
     .then(res => {
-        console.log(11111111111111111111111111111111)
-        console.log(res)
-        console.log(res.data)
         const token = res.data.token;
         const name = res.data.name;
         const last_name = res.data.last_name;
@@ -81,11 +77,6 @@ const signin = (dispatch) =>  ({username, password}) => {
         // dispatch(checkAuthTimeout(3600));
     })
     .catch(err => {
-        console.log(88888888888888888888888888888)
-        
-        console.log("errr: ",err)
-        console.log("errr: ",typeof err)
-        console.log("errr: ", err.message+ "   sssssssssssssssssssss")
         let errorMessage = null;
         if(err.response.data.non_field_errors || err.response.data.password){
             errorMessage = 'Las credenciales ingresadas son incorrectas';
@@ -115,5 +106,5 @@ const clearErrorMessage = dispatch => () => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     {signin, signout, clearErrorMessage, tryLocalSignin},
-    {token: null, errorMessage: ''}
+    {token: null, errorMessage: '', loading: false}
 );
