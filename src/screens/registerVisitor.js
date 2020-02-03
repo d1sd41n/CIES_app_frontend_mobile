@@ -30,7 +30,7 @@ registerVisitor.navigationOptions = ({navigation}) => {
         <Ionicons name='ios-menu' size={30} />
       </TouchableOpacity>
   </View>
-}
+  }
 };
 
 export default registerVisitor;
