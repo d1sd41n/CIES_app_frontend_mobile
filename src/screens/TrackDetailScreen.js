@@ -7,7 +7,7 @@ import { StyleSheet, Text, TouchableOpacity, FlatList} from 'react-native';
 const TrackListScreen = ({navigation}) => {
   return (
     <>
-      <Text style={styles.text}>account screen</Text>
+      <Text style={styles.text}>TrackListScreen</Text>
       
     </>
   );
@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
   },
 });
 
-// TrackListScreen.navigationOptions = () => {
-//   return {
-//   title: 'Tracks'
-// }
-// };
+TrackListScreen.navigationOptions = () => {
+  return {
+  title: 'Tracks'
+}
+};
 
 
 export default TrackListScreen;
