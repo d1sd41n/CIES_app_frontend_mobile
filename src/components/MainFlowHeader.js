@@ -7,6 +7,7 @@ const MainFlowHeader = (props) => {
     console.log(3333)
     console.log(props)
     console.log(3333)
+    console.log("wsgdefdsfdgsfsgfdsfdsfg")
     return (
         // <Text style={styles.text}>AccountScreesewrfn</Text>
         <View style={{flex: 1, flexDirection: 'row', marginLeft: 16}}>

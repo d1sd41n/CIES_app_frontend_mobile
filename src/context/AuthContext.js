@@ -26,9 +26,12 @@ const authReducer = (state, action) => {
 
 const tryLocalSignin = dispatch => async () => {
     const token = await AsyncStorage.getItem('token');
+    console.log("llllllllllllllllllllllllllllllllllllllllll")
+    console.log(token)
+    console.log("llllllllllllllllllllllllllllllllllllllllll")
     if(token){
         dispatch({ type: 'signin', payload: token });
-        navigate('TrackList');
+        navigate('visitorRegister');
     } else {
         navigate('loginFlow');
     }
@@ -60,7 +63,7 @@ const signin = (dispatch) =>  ({username, password}) => {
         AsyncStorage.setItem('token', token);
         dispatch({type: 'signin', payload: res.data.token});
 
-        navigate('TrackList');
+        navigate('visitorRegister');
 
         // localStorage.setItem('token', token);
         // localStorage.setItem('expirationDate', expirationDate);
