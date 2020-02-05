@@ -1,24 +1,77 @@
 import React, {useContext} from 'react';
-import { StyleSheet, Text, TouchableOpacity, Button, View} from 'react-native';
+import { StyleSheet, TouchableOpacity, View} from 'react-native';
+import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 // import { FlatList } from 'react-native-gesture-handler';
+import Spacer from '../components/Spacer';
 
 const registerVisitor = ({navigation}) => {
   return (
-    <>
-      <Text style={styles.text}>registerVisitor</Text>
+    <View >
+      <Spacer>
+      <Text h3>Registrar visitante</Text>
+      </Spacer>
+      <Input 
+          keyboardType={'numeric'}
+          inputStyle={styles.input}
+          placeholder='Cedula'
+          onChangeText={(newUsername) => setUsername(newUsername)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+      <Input
+          inputStyle={styles.input}
+          placeholder='Nombres'
+          onChangeText={(newPassword) => setPassword(newPassword)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+        <Input 
+          inputStyle={styles.input}
+          placeholder='Apellidos'
+          onChangeText={(newUsername) => setUsername(newUsername)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+      <Input 
+          inputStyle={styles.input}
+          placeholder='Email' 
+          onChangeText={(newPassword) => setPassword(newPassword)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+      <Input 
+          keyboardType={'numeric'}
+          inputStyle={styles.input}
+          placeholder='Telefono' 
+          onChangeText={(newPassword) => setPassword(newPassword)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+      <Spacer />
       <Button title="Go to acount detail" onPress={() => navigation.navigate("TrackDetail")}></Button>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: 'center',
+    marginBottom: 200,
   },
   text: {
       fontSize: 48
   },
+  errorMessage: {
+    fontSize: 16,
+    color: 'red'
+  },
+  input: {
+    marginTop: 10,
+    marginHorizontal: 3
+  }
 });
 
 registerVisitor.navigationOptions = ({navigation}) => {

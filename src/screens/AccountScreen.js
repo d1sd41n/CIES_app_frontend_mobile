@@ -8,7 +8,7 @@ import { Context as AuthContext } from '../context/AuthContext';
 import MainFlowHeader  from '../components/MainFlowHeader';
 
 
-const AccountScreen = ({navigation}) => {
+const AccountScreen = () => {
   const { signout } = useContext(AuthContext);
 
   return (
@@ -31,12 +31,7 @@ const styles = StyleSheet.create({
 AccountScreen.navigationOptions = ({navigation}) => {
   return {
   headerTitle: 
-  <MainFlowHeader name="sssss"/>
-  //   <View style={{flex: 1, flexDirection: 'row', marginLeft: 16}}>
-  //     <TouchableOpacity style={styles.button} onPress={()=>navigation.openDrawer()}>
-  //       <Ionicons name='ios-menu' size={30} />
-  //     </TouchableOpacity>
-  // </View>
+  <MainFlowHeader navigation={navigation}/>
   }
 };
 
