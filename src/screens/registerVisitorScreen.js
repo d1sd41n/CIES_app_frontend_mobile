@@ -6,12 +6,19 @@ import { Ionicons } from '@expo/vector-icons';
 // import { FlatList } from 'react-native-gesture-handler';
 import Spacer from '../components/Spacer';
 
+// import { Context } from '../context/PostDataContext';
+import { Context } from '../context/PostRequestContext';
+
 const registerVisitor = ({navigation}) => {
+  // const {state, postData, clearErrorMessage } = useContext(Context);
+  const {state, clearErrorMessage } = useContext(Context);
   const [cedula, setCedula] = useState('');
   const [names, setNames] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+
+  console.log(state);
 
   return (
     <View >

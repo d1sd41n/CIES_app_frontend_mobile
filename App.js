@@ -8,10 +8,12 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import AccountScreen from './src/screens/AccountScreen';
 import SignInScreen from './src/screens/SignInScreen'; // no borrar
 import TrackDetailScreen from './src/screens/TrackDetailScreen';
-import registerVisitor from './src/screens/registerVisitor';
+import registerVisitor from './src/screens/registerVisitorScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen'; // no borrar
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as PostDataProvider } from './src/context/AuthContext';
+import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
 
 import { setNavigator } from './src/navigationRef';
 
@@ -52,8 +54,10 @@ const App = createAppContainer(switchNavigator);
 
 export default() => {
   return(
-    <AuthProvider>
-      <App ref={(navigator) => { setNavigator(navigator) }}/>
-    </AuthProvider>
+    <PostRequestProvider>
+      <AuthProvider>
+        <App ref={(navigator) => { setNavigator(navigator) }}/>
+      </AuthProvider>
+    </PostRequestProvider>
   )
 }
