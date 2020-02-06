@@ -16,10 +16,6 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 
 
-
-
-
-
 // this part is the main navigator where if the user is logged is send to the menu, if not to the signin screen
 const switchNavigator = createSwitchNavigator({
     //  ResolveAuth: ResolveAuthScreen,

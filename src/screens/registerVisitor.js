@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import { StyleSheet, TouchableOpacity, View} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,12 @@ import { Ionicons } from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 
 const registerVisitor = ({navigation}) => {
+  const [cedula, setCedula] = useState('');
+  const [names, setNames] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
   return (
     <View >
       <Spacer>
@@ -16,28 +22,28 @@ const registerVisitor = ({navigation}) => {
           keyboardType={'numeric'}
           inputStyle={styles.input}
           placeholder='Cedula'
-          onChangeText={(newUsername) => setUsername(newUsername)}
+          onChangeText={(newCedula) => setCedula(newCedula)}
           autoCapitalize="none"
           autoCorrect={false}
           />
       <Input
           inputStyle={styles.input}
           placeholder='Nombres'
-          onChangeText={(newPassword) => setPassword(newPassword)}
+          onChangeText={(newNames) => setNames(newNames)}
           autoCapitalize="none"
           autoCorrect={false}
           />
         <Input 
           inputStyle={styles.input}
           placeholder='Apellidos'
-          onChangeText={(newUsername) => setUsername(newUsername)}
+          onChangeText={(newLastName) => setLastName(newLastName)}
           autoCapitalize="none"
           autoCorrect={false}
           />
       <Input 
           inputStyle={styles.input}
           placeholder='Email' 
-          onChangeText={(newPassword) => setPassword(newPassword)}
+          onChangeText={(newEmail) => setEmail(newEmail)}
           autoCapitalize="none"
           autoCorrect={false}
           />
@@ -45,7 +51,7 @@ const registerVisitor = ({navigation}) => {
           keyboardType={'numeric'}
           inputStyle={styles.input}
           placeholder='Telefono' 
-          onChangeText={(newPassword) => setPassword(newPassword)}
+          onChangeText={(newPhone) => setPhone(newPhone)}
           autoCapitalize="none"
           autoCorrect={false}
           />
