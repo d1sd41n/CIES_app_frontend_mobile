@@ -11,7 +11,8 @@ import { Context } from '../context/PostRequestContext';
 
 const registerVisitor = ({navigation}) => {
   // const {state, postData, clearErrorMessage } = useContext(Context);
-  const {state, clearErrorMessage } = useContext(Context);
+  // const {state, clearErrorMessage } = useContext(Context);
+  const {state, postData, clearErrorMessage } = useContext(Context);
   const [cedula, setCedula] = useState('');
   const [names, setNames] = useState('');
   const [lastName, setLastName] = useState('');
@@ -19,6 +20,7 @@ const registerVisitor = ({navigation}) => {
   const [phone, setPhone] = useState('');
 
   console.log(state);
+  // postData()
 
   return (
     <View >
@@ -63,7 +65,7 @@ const registerVisitor = ({navigation}) => {
           autoCorrect={false}
           />
       <Spacer />
-      <Button title="Go to acount detail" onPress={() => navigation.navigate("TrackDetail")}></Button>
+      <Button title="Registrar Visitante" onPress={() => navigation.navigate("TrackDetail")}></Button>
     </View>
   );
 }
