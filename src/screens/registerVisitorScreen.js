@@ -13,13 +13,13 @@ const registerVisitor = ({navigation}) => {
   // const {state, postData, clearErrorMessage } = useContext(Context);
   // const {state, clearErrorMessage } = useContext(Context);
   const {state, postData, clearErrorMessage } = useContext(Context);
-  const [cedula, setCedula] = useState('');
-  const [names, setNames] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [dni, setDni] = useState('');
+  const [first_name, setFirst_name] = useState('');
+  const [last_name, setLast_name] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  console.log(state);
+  // console.log(state);
   // postData({ww:2,f:44}, {ddd: 87})
 
   return (
@@ -31,21 +31,21 @@ const registerVisitor = ({navigation}) => {
           keyboardType={'numeric'}
           inputStyle={styles.input}
           placeholder='Cedula'
-          onChangeText={(newCedula) => setCedula(newCedula)}
+          onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
           autoCorrect={false}
           />
       <Input
           inputStyle={styles.input}
           placeholder='Nombres'
-          onChangeText={(newNames) => setNames(newNames)}
+          onChangeText={(newNames) => setFirst_name(newNames)}
           autoCapitalize="none"
           autoCorrect={false}
           />
         <Input 
           inputStyle={styles.input}
           placeholder='Apellidos'
-          onChangeText={(newLastName) => setLastName(newLastName)}
+          onChangeText={(newLastName) => setLast_name(newLastName)}
           autoCapitalize="none"
           autoCorrect={false}
           />
@@ -67,7 +67,7 @@ const registerVisitor = ({navigation}) => {
       <Spacer />
       <Button
         title="Registrar Visitante"
-        onPress={() => postData({cedula, names, lastName, email, phone}, 
+        onPress={() => postData({dni, first_name, last_name, email, phone}, 
                                 {ddd: 87})}
         >
         </Button>
