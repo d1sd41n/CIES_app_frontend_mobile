@@ -20,7 +20,7 @@ const registerVisitor = ({navigation}) => {
   const [phone, setPhone] = useState('');
 
   console.log(state);
-  // postData()
+  // postData({ww:2,f:44}, {ddd: 87})
 
   return (
     <View >
@@ -65,7 +65,12 @@ const registerVisitor = ({navigation}) => {
           autoCorrect={false}
           />
       <Spacer />
-      <Button title="Registrar Visitante" onPress={() => navigation.navigate("TrackDetail")}></Button>
+      <Button
+        title="Registrar Visitante"
+        onPress={() => postData({cedula, names, lastName, email, phone}, 
+                                {ddd: 87})}
+        >
+        </Button>
     </View>
   );
 }

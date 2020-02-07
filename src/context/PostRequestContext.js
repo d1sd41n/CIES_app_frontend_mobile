@@ -23,25 +23,28 @@ const authReducer = (state, action) => {
 }
 
 // const postData  = (dispatch) =>  ({data, url}) => {
-const postData  = (dispatch) =>  () => {
+const postData  = (dispatch) =>  (data, kk) => {
     // dispatch({type: 'loading'});
     console.log("postDatapostDatapostData")
+    console.log(data)
+    console.log(kk)
 
-        // const token = "";
-        // const headers = {
-        //     'Content-Type': 'application/json',
-        //     'Authorization': 'Token ' + token,
-        //     'Accept-Language': 'es-ES,es;q=0.8',
-        //   };
-        // axios.post('https://cies.tech/core/login_token/', data, {headers})
-        //     .then(res => {
-        //         // dispatch(postDataSuccess());
-        //         console.log("ssssss")
-        //     })
-        //     .catch(err => {
-        //     //     dispatch(requestFail(err))]
-        //         console.log(err.response.data)
-        //     })
+    const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Token ' + token,
+        'Accept-Language': 'es-ES,es;q=0.8',
+        };
+    axios.post('https://cies.tech/core/companies/1/visitors/', data, {headers})
+        .then(res => {
+            // dispatch(postDataSuccess());
+            console.log("ssssss")
+            console.log(res )
+        })
+        .catch(err => {
+        //     dispatch(requestFail(err))]
+            console.log(err.response.data)
+        })
 }
 
 const clearErrorMessage = dispatch => () => {
