@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { StyleSheet, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ActivityIndicator} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -19,7 +19,7 @@ const registerVisitor = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  // console.log(state);
+  console.log(state);
   // postData({ww:2,f:44}, {ddd: 87})
 
   return (
@@ -65,10 +65,11 @@ const registerVisitor = ({navigation}) => {
           autoCorrect={false}
           />
       <Spacer />
+      {state.loading ? <ActivityIndicator size="large" color="#0000ff" />: null}
       <Button
         title="Registrar Visitante"
         onPress={() => postData({dni, first_name, last_name, email, phone}, 
-                                {ddd: 87})}
+                                url='/core/companies/1/visitors/')}
         >
         </Button>
     </View>

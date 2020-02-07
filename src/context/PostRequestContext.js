@@ -2,6 +2,8 @@ import { AsyncStorage } from 'react-native';
 
 import {navigate} from '../navigationRef';
 import createDataContext from './createDataContext';
+// import backendUrl from "../../variables/backendURL.js";
+import backendUrl from "../variables/backendURL.js"
 
 import axios from 'axios';
 
@@ -12,8 +14,8 @@ const authReducer = (state, action) => {
             return {...state, loading: true};
         case 'add_error':
             return {...state, errorMessage: action.payload, loading: false};
-        case 'signout':
-            return {errorMessage: '', token: null};
+        case 'post_success':
+             return {errorMessage: '', loading: false};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false};
         default:
@@ -23,11 +25,11 @@ const authReducer = (state, action) => {
 }
 
 // const postData  = (dispatch) =>  ({data, url}) => {
-const postData  = (dispatch) =>  (data, kk) => {
-    // dispatch({type: 'loading'});
+const postData  = (dispatch) =>  (data, url) => {
+    dispatch({type: 'loading'});
     console.log("postDatapostDatapostData")
     console.log(data)
-    console.log(kk)
+    console.log(url)
 
     const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
     const headers = {
@@ -35,9 +37,9 @@ const postData  = (dispatch) =>  (data, kk) => {
         'Authorization': 'Token ' + token,
         'Accept-Language': 'es-ES,es;q=0.8',
         };
-    axios.post('https://cies.tech/core/companies/1/visitors/', data, {headers})
+    axios.post(backendUrl + '/core/companies/1/visitors/', data, {headers})
         .then(res => {
-            // dispatch(postDataSuccess());
+            dispatch({type: 'post_success'});
             console.log("ssssss")
             console.log(res )
         })

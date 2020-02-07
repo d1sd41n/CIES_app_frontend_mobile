@@ -12,7 +12,6 @@ import registerVisitor from './src/screens/registerVisitorScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen'; // no borrar
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
-import { Provider as PostDataProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
 
 import { setNavigator } from './src/navigationRef';
