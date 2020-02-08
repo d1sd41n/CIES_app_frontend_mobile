@@ -8,6 +8,7 @@ import Spacer from '../components/Spacer';
 
 // import { Context } from '../context/PostDataContext';
 import { Context } from '../context/PostRequestContext';
+import GetErrorMessages from "../variables/dataFieldNames"
 
 const registerVisitor = ({navigation}) => {
   // const {state, postData, clearErrorMessage } = useContext(Context);
@@ -20,17 +21,19 @@ const registerVisitor = ({navigation}) => {
   const [phone, setPhone] = useState('');
 
   console.log(state);
+  // getErrorMessages()
   // postData({ww:2,f:44}, {ddd: 87})
 
   return (
     <View >
       <Spacer>
       <Text h3>Registrar visitante</Text>
+      <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
       </Spacer>
       <Input 
           keyboardType={'numeric'}
           inputStyle={styles.input}
-          placeholder='Cedula'
+          placeholder='Cedula/dni'
           onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
           autoCorrect={false}
@@ -71,19 +74,15 @@ const registerVisitor = ({navigation}) => {
         onPress={() => postData({dni, first_name, last_name, email, phone}, 
                                 url='/core/companies/1/visitors/')}
         >
-        </Button>
+      </Button>
+      {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginBottom: 200,
-  },
-  text: {
-      fontSize: 48
+  subtitleText: {
+      color: "gray"
   },
   errorMessage: {
     fontSize: 16,

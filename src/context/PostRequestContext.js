@@ -27,9 +27,6 @@ const authReducer = (state, action) => {
 // const postData  = (dispatch) =>  ({data, url}) => {
 const postData  = (dispatch) =>  (data, url) => {
     dispatch({type: 'loading'});
-    console.log("postDatapostDatapostData")
-    console.log(data)
-    console.log(url)
 
     const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
     const headers = {
@@ -40,12 +37,10 @@ const postData  = (dispatch) =>  (data, url) => {
     axios.post(backendUrl + '/core/companies/1/visitors/', data, {headers})
         .then(res => {
             dispatch({type: 'post_success'});
-            console.log("ssssss")
-            console.log(res )
         })
         .catch(err => {
-        //     dispatch(requestFail(err))]
-            console.log(err.response.data)
+            let error = err.response.data;
+            dispatch({type: 'add_error', payload: error});
         })
 }
 
@@ -56,5 +51,5 @@ const clearErrorMessage = dispatch => () => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     {clearErrorMessage, postData},
-    {errorMessage: '', loading: false}
+    {errorMessage: null, loading: false}
 );
