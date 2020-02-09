@@ -11,13 +11,13 @@ import axios from 'axios';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'loading':
-            return {...state, loading: true};
+            return {...state, loading: true, errorMessage: '', postSuccess: false};
         case 'add_error':
             return {...state, errorMessage: action.payload, loading: false};
         case 'post_success':
-             return {errorMessage: '', loading: false};
+             return {errorMessage: '', loading: false, postSuccess: true};
         case 'clear_error_message':
-            return {...state, errorMessage: '', loading: false};
+            return {...state, errorMessage: '', loading: false, postSuccess: false};
         default:
             return state;
     }
@@ -51,5 +51,5 @@ const clearErrorMessage = dispatch => () => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     {clearErrorMessage, postData},
-    {errorMessage: null, loading: false}
+    {errorMessage: null, loading: false, postSuccess: false}
 );

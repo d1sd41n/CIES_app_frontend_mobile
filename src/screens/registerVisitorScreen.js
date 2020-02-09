@@ -2,17 +2,13 @@ import React, {useState, useContext} from 'react';
 import { StyleSheet, TouchableOpacity, View, ActivityIndicator} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigationEvents } from 'react-navigation';
 
-// import { FlatList } from 'react-native-gesture-handler';
 import Spacer from '../components/Spacer';
-
-// import { Context } from '../context/PostDataContext';
 import { Context } from '../context/PostRequestContext';
 import GetErrorMessages from "../variables/dataFieldNames"
 
 const registerVisitor = ({navigation}) => {
-  // const {state, postData, clearErrorMessage } = useContext(Context);
-  // const {state, clearErrorMessage } = useContext(Context);
   const {state, postData, clearErrorMessage } = useContext(Context);
   const [dni, setDni] = useState('');
   const [first_name, setFirst_name] = useState('');
@@ -20,12 +16,10 @@ const registerVisitor = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  console.log(state);
-  // getErrorMessages()
-  // postData({ww:2,f:44}, {ddd: 87})
-
   return (
     <View >
+      <NavigationEvents 
+        onWillBlur={clearErrorMessage}/>
       <Spacer>
       <Text h3>Registrar visitante</Text>
       <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
@@ -68,7 +62,12 @@ const registerVisitor = ({navigation}) => {
           autoCorrect={false}
           />
       <Spacer />
-      {state.loading ? <ActivityIndicator size="large" color="#0000ff" />: null}
+      {state.loading ?
+        <>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={styles.loadingText}>Registrando visitante</Text>
+        </>
+        : null}
       <Button
         title="Registrar Visitante"
         onPress={() => postData({dni, first_name, last_name, email, phone}, 
@@ -76,6 +75,7 @@ const registerVisitor = ({navigation}) => {
         >
       </Button>
       {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}
+      {state.postSuccess ? <Text style={styles.postSuccess}>El visitante ha sido registrado con exito</Text>: null}
     </View>
   );
 }
@@ -91,7 +91,15 @@ const styles = StyleSheet.create({
   input: {
     marginTop: 10,
     marginHorizontal: 3
-  }
+  },
+  loadingText: {
+    color: "blue",
+    textAlign: 'center'
+  },
+  postSuccess: {
+    color: "green",
+    textAlign: 'center'
+  },
 });
 
 registerVisitor.navigationOptions = ({navigation}) => {
