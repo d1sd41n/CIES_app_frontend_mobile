@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { StyleSheet, TouchableOpacity, View, ActivityIndicator} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
@@ -70,8 +70,12 @@ const registerVisitor = ({navigation}) => {
         : null}
       <Button
         title="Registrar Visitante"
-        onPress={() => postData({dni, first_name, last_name, email, phone}, 
-                                url='/core/companies/1/visitors/')}
+        onPress={async () =>{
+          let company_id = await AsyncStorage.getItem('company_id');
+          console.log(company_id)
+          postData({dni, first_name, last_name, email, phone}, 
+                    url='/core/companies/1/visitors/')
+                  }}
         >
       </Button>
       {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}

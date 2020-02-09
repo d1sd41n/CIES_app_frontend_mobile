@@ -24,7 +24,7 @@ const SignInScreen = ({navigation}) => {
       <Text h3>CIES APP</Text>
       </Spacer>
       <Input 
-          label="username" 
+          label="email o nombre de usuario" 
           onChangeText={(newUsername) => setUsername(newUsername)}
           autoCapitalize="none"
           autoCorrect={false}
@@ -32,7 +32,7 @@ const SignInScreen = ({navigation}) => {
       <Spacer />
       <Input 
           secureTextEntry
-          label="Password" 
+          label="password" 
           onChangeText={(newPassword) => setPassword(newPassword)}
           autoCapitalize="none"
           autoCorrect={false}

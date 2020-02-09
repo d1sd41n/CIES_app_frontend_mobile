@@ -50,31 +50,26 @@ const signin = (dispatch) =>  ({username, password}) => {
         const token = res.data.token;
         const name = res.data.name;
         const last_name = res.data.last_name;
-        const user_id = res.data.user_id;
-        const company_id = res.data.company;
-        const seat_id = res.data.seat;
+        const user_id = res.data.user_id.toString();
+        const company_id = res.data.company.toString();
+        const seat_id = res.data.seat.toString();
         const company_name = res.data.company_name;
         const seat_name = res.data.seat_name;
-        const type = res.data.type; 
+        const type = res.data.type;
 
         AsyncStorage.setItem('token', token);
+        AsyncStorage.setItem('name', name);
+        AsyncStorage.setItem('last_name', last_name);
+        AsyncStorage.setItem('user_id', user_id);
+        AsyncStorage.setItem('company_id', company_id);
+        AsyncStorage.setItem('seat_id', seat_id);
+        AsyncStorage.setItem('company_name', company_name);
+        AsyncStorage.setItem('seat_name', seat_name);
+        AsyncStorage.setItem('type', type);
+
         dispatch({type: 'signin', payload: res.data.token});
 
         navigate('visitorRegister');
-
-        // localStorage.setItem('token', token);
-        // localStorage.setItem('expirationDate', expirationDate);
-        // localStorage.setItem('name', name);
-        // localStorage.setItem('last_name', last_name);
-        // localStorage.setItem('user_id', user_id);
-        // localStorage.setItem('company_id', company_id);
-        // localStorage.setItem('seat_id', seat_id);
-        // localStorage.setItem('company_name', company_name);
-        // localStorage.setItem('seat_name', seat_name);
-        // localStorage.setItem('type', type);
-
-        // dispatch(authSuccess(token, name, last_name));
-        // dispatch(checkAuthTimeout(3600));
     })
     .catch(err => {
         let errorMessage = null;
@@ -84,7 +79,6 @@ const signin = (dispatch) =>  ({username, password}) => {
         else{
             errorMessage = "Ha ocurrido un error " + err.message;
         }
-
 
         dispatch({type: 'add_error', payload: errorMessage});
     })
