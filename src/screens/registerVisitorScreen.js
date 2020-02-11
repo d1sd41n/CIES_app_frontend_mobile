@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, Alert} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
@@ -16,6 +16,18 @@ const registerVisitor = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
+  if (state.postSuccess ){
+    Alert.alert(
+      'Visitante Registrado',
+      'El visitante se ha registrado correctamente');
+    setDni('');
+    setFirst_name('');
+    setLast_name('');
+    setEmail('');
+    setPhone('');
+    clearErrorMessage();
+  }
+
   return (
     <View >
       <NavigationEvents 
@@ -31,6 +43,7 @@ const registerVisitor = ({navigation}) => {
           onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
           autoCorrect={false}
+          value={dni}
           />
       <Input
           inputStyle={styles.input}
@@ -74,12 +87,13 @@ const registerVisitor = ({navigation}) => {
           let company_id = await AsyncStorage.getItem('company_id');
           console.log(company_id)
           postData({dni, first_name, last_name, email, phone}, 
-                    url='/core/companies/1/visitors/')
+                    url='/core/companies/' + company_id + '/visitors/')
                   }}
         >
       </Button>
       {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}
-      {state.postSuccess ? <Text style={styles.postSuccess}>El visitante ha sido registrado con exito</Text>: null}
+      {/* {state.postSuccess ? <Text style={styles.postSuccess}>El visitante ha sido registrado con exito</Text>: null} */}
+
     </View>
   );
 }

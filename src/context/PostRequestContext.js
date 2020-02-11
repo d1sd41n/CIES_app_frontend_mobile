@@ -25,16 +25,17 @@ const authReducer = (state, action) => {
 }
 
 // const postData  = (dispatch) =>  ({data, url}) => {
-const postData  = (dispatch) =>  (data, url) => {
+const postData  = (dispatch) =>  async (data, url) => {
     dispatch({type: 'loading'});
+    let token = await AsyncStorage.getItem('token');
 
-    const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
+    // const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Token ' + token,
         'Accept-Language': 'es-ES,es;q=0.8',
         };
-    axios.post(backendUrl + '/core/companies/1/visitors/', data, {headers})
+    axios.post(backendUrl + url, data, {headers})
         .then(res => {
             dispatch({type: 'post_success'});
         })
