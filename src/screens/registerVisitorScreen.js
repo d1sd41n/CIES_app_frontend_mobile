@@ -16,18 +16,6 @@ const registerVisitor = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
 
-  if (state.postSuccess ){
-    Alert.alert(
-      'Visitante Registrado',
-      'El visitante se ha registrado correctamente');
-    setDni('');
-    setFirst_name('');
-    setLast_name('');
-    setEmail('');
-    setPhone('');
-    clearErrorMessage();
-  }
-
   return (
     <View >
       <NavigationEvents 
@@ -92,7 +80,7 @@ const registerVisitor = ({navigation}) => {
         >
       </Button>
       {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}
-      {/* {state.postSuccess ? <Text style={styles.postSuccess}>El visitante ha sido registrado con exito</Text>: null} */}
+      {state.postSuccess ? <Text style={styles.postSuccess}>El visitante ha sido registrado con exito</Text>: null}
 
     </View>
   );

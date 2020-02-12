@@ -6,10 +6,11 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 
 import AccountScreen from './src/screens/AccountScreen';
-import SignInScreen from './src/screens/SignInScreen'; // no borrar
+import SignInScreen from './src/screens/SignInScreen';
 import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import registerVisitor from './src/screens/registerVisitorScreen';
-import ResolveAuthScreen from './src/screens/ResolveAuthScreen'; // no borrar
+import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
+import RegisterItem from './src/screens/RegisterItemScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
@@ -31,16 +32,24 @@ const switchNavigator = createSwitchNavigator({
           navigationOptions: {
             drawerLabel: "Mi perfil"
           }
-      },
-      visitorRegister: {
-        screen: createStackNavigator({
-          visitorRegister: registerVisitor,
-          TrackDetail: TrackDetailScreen,
-          }),
-          navigationOptions: {
-            drawerLabel: "Registrar visitante"
-          }
-      },
+        },
+        visitorRegister: {
+          screen: createStackNavigator({
+            visitorRegister: registerVisitor,
+            TrackDetail: TrackDetailScreen,
+            }),
+            navigationOptions: {
+              drawerLabel: "Registrar visitante"
+            }
+        },
+        itemRegister: {
+          screen: createStackNavigator({
+            itemRegister: RegisterItem,
+            }),
+            navigationOptions: {
+              drawerLabel: "Registrar Objeto"
+            }
+        },
       },{
         initialRouteName: 'visitorRegister',
       }
