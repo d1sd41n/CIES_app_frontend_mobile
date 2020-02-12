@@ -8,9 +8,10 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import AccountScreen from './src/screens/AccountScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import TrackDetailScreen from './src/screens/TrackDetailScreen';
-import registerVisitor from './src/screens/registerVisitorScreen';
+import registerVisitorScreen from './src/screens/registerVisitorScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
-import RegisterItem from './src/screens/RegisterItemScreen';
+import RegisterItemScreen from './src/screens/RegisterItemScreen';
+import BarCodeReaderScreen from './src/screens/BarCodeReaderScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
@@ -35,7 +36,7 @@ const switchNavigator = createSwitchNavigator({
         },
         visitorRegister: {
           screen: createStackNavigator({
-            visitorRegister: registerVisitor,
+            visitorRegister: registerVisitorScreen,
             TrackDetail: TrackDetailScreen,
             }),
             navigationOptions: {
@@ -44,7 +45,8 @@ const switchNavigator = createSwitchNavigator({
         },
         itemRegister: {
           screen: createStackNavigator({
-            itemRegister: RegisterItem,
+            itemRegister: RegisterItemScreen,
+            BarCode: BarCodeReaderScreen,
             }),
             navigationOptions: {
               drawerLabel: "Registrar Objeto"

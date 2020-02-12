@@ -9,22 +9,24 @@ import { Context } from '../context/PostRequestContext';
 import GetErrorMessages from "../variables/dataFieldNames"
 
 const registerVisitor = ({navigation}) => {
-  
+    console.log(navigation)
+    // navigate('visitorRegister');
 
-  return (
+    return (
     <View >
-      <Spacer>
-      <Text h3>Registrar Objeto</Text>
-      <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
-      </Spacer>
-      <Spacer />
-      <Button
+        <Spacer>
+        <Text h3>Registrar Objeto</Text>
+        <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
+        </Spacer>
+        <Button
         title="Registrar Visitante"
-        >
-      </Button>
+        onPress={() =>{
+            navigation.navigate('BarCode');
+                  }}
+        />
 
     </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
