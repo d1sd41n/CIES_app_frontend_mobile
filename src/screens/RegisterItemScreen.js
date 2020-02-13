@@ -9,8 +9,6 @@ import { Context } from '../context/PostRequestContext';
 import GetErrorMessages from "../variables/dataFieldNames"
 
 const registerVisitor = ({navigation}) => {
-    console.log(navigation)
-    // navigate('visitorRegister');
 
     return (
     <View >
@@ -20,8 +18,7 @@ const registerVisitor = ({navigation}) => {
         </Spacer>
         <Button
         title="Registrar Visitante"
-        onPress={() =>{
-            navigation.navigate('BarCode');
+        onPress={() =>{navigation.navigate('BarCode');
                   }}
         />
 

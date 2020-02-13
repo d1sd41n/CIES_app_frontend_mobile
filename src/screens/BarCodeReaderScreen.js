@@ -39,9 +39,10 @@ export default function BarCodeReader() {
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
+        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
       />
 
-      <Text style={styles.text}>apunta a un qr</Text>
+      <Text style={styles.text}>Apunta con la camara al codigo QR</Text>
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
     </View>
   );
