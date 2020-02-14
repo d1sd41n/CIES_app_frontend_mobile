@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export default function BarCodeReader() {
+export default function BarCodeReader({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+
+  console.log(navigation)
 
   useEffect(() => {
     (async () => {
@@ -20,6 +22,7 @@ export default function BarCodeReader() {
     console.log(type);
     console.log("datos: ");
     console.log(data);
+    navigation.navigate('itemRegister')
   };
 
   if (hasPermission === null) {
