@@ -31,7 +31,6 @@ const registerVisitor = ({navigation}) => {
           onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
           autoCorrect={false}
-          value={dni}
           />
       <Input
           inputStyle={styles.input}

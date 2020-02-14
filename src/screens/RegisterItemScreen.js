@@ -5,10 +5,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 
 import Spacer from '../components/Spacer';
-import { Context } from '../context/PostRequestContext';
+import { Context as PostContex} from '../context/PostRequestContext';
+import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
 import GetErrorMessages from "../variables/dataFieldNames"
 
-const registerVisitor = ({navigation}) => {
+const ItemRegister = ({navigation}) => {
+  const {state, postData, clearErrorMessage } = useContext(PostContex);
+  const QrContext = useContext(QrCodeScannerContext);
+
+  console.log("QrCodeScannerContext: ")
+  console.log(QrContext)
 
     return (
     <View >
@@ -16,8 +22,18 @@ const registerVisitor = ({navigation}) => {
         <Text h3>Registrar Objeto</Text>
         <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
         </Spacer>
+
+        <Input 
+          inputStyle={styles.input}
+          label='Codigo Qr'
+          placeholder='Codigo Qr'
+          disabled={true}
+          // onChangeText={(newDni) => setDni(newDni)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
         <Button
-        title="Registrar Visitante"
+        title="Escanear Codigo Qr"
         onPress={() =>{navigation.navigate('BarCode');
                   }}
         />
@@ -48,7 +64,7 @@ const styles = StyleSheet.create({
   },
 });
 
-registerVisitor.navigationOptions = ({navigation}) => {
+ItemRegister.navigationOptions = ({navigation}) => {
   return {
   headerTitle: 
 
@@ -60,4 +76,4 @@ registerVisitor.navigationOptions = ({navigation}) => {
   }
 };
 
-export default registerVisitor;
+export default ItemRegister;

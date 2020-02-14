@@ -15,6 +15,7 @@ import BarCodeReaderScreen from './src/screens/BarCodeReaderScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
+import { Provider as QrCodeScannerProvider } from './src/context/QrCodeScannerContext';
 
 import { setNavigator } from './src/navigationRef';
 
@@ -64,10 +65,12 @@ const App = createAppContainer(switchNavigator);
 
 export default() => {
   return(
-    <PostRequestProvider>
-      <AuthProvider>
-        <App ref={(navigator) => { setNavigator(navigator) }}/>
-      </AuthProvider>
-    </PostRequestProvider>
+    <QrCodeScannerProvider>
+      <PostRequestProvider>
+        <AuthProvider>
+          <App ref={(navigator) => { setNavigator(navigator) }}/>
+        </AuthProvider>
+      </PostRequestProvider>
+    </QrCodeScannerProvider>
   )
 }
