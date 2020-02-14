@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+
+
+import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
+
 
 export default function BarCodeReader({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const {state, saveQrCodeHash }  = useContext(QrCodeScannerContext);
 
-  console.log(navigation)
+  console.log(state)
 
   useEffect(() => {
     (async () => {
@@ -18,11 +23,12 @@ export default function BarCodeReader({navigation}) {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    console.log("tipo de barra: ");
-    console.log(type);
-    console.log("datos: ");
-    console.log(data);
-    navigation.navigate('itemRegister')
+    // console.log("tipo de barra: ");
+    // console.log(type);
+    // console.log("datos: ");
+    // console.log(data);
+    saveQrCodeHash(data);
+    // navigation.navigate('itemRegister')
   };
 
   if (hasPermission === null) {

@@ -10,15 +10,21 @@ import axios from 'axios';
 
 const authReducer = (state, action) => {
     switch (action.type) {
-        // case 'loading':
-        //     return {...state, loading: true, errorMessage: '', postSuccess: false};
+        case 'saveCode':
+            return {qrCodeHash: action.payload};
+        case 'deleteCode':
+                return {qrCodeHash: ''};
         default:
             return state;
     }
 }
 
-const saveQrCodeHash = dispatch => () => {
-    dispatch({type: 'clear_error_message'})
+const saveQrCodeHash = dispatch => (qrHash) => {
+    dispatch({type: 'saveCode', payload: qrHash})
+};
+
+const deleteQrCodeHash = dispatch => () => {
+    dispatch({type: 'deleteCode'})
 };
 
 export const { Provider, Context } = createDataContext(

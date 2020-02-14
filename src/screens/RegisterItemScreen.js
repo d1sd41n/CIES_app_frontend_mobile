@@ -15,6 +15,7 @@ const ItemRegister = ({navigation}) => {
 
   console.log("QrCodeScannerContext: ")
   console.log(QrContext)
+  let qrHash = QrContext.state.qrCodeHash;
 
     return (
     <View >
@@ -30,6 +31,7 @@ const ItemRegister = ({navigation}) => {
           disabled={true}
           // onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
+          value={qrHash}
           autoCorrect={false}
           />
         <Button
