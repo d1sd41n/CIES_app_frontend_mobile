@@ -2,7 +2,6 @@ import { AsyncStorage } from 'react-native';
 
 import {navigate} from '../navigationRef';
 import createDataContext from './createDataContext';
-// import backendUrl from "../../variables/backendURL.js";
 import backendUrl from "../variables/backendURL.js"
 
 import axios from 'axios';

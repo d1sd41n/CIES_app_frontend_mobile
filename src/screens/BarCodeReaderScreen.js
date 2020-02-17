@@ -11,8 +11,6 @@ export default function BarCodeReader({navigation}) {
   const [scanned, setScanned] = useState(false);
   const {state, saveQrCodeHash }  = useContext(QrCodeScannerContext);
 
-  console.log(state)
-
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -22,13 +20,9 @@ export default function BarCodeReader({navigation}) {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    // console.log("tipo de barra: ");
-    // console.log(type);
-    // console.log("datos: ");
-    // console.log(data);
+    alert(`EL codigo: ${data} se ha escaneado!`);
     saveQrCodeHash(data);
-    // navigation.navigate('itemRegister')
+    navigation.navigate('itemRegister')
   };
 
   if (hasPermission === null) {
@@ -52,7 +46,7 @@ export default function BarCodeReader({navigation}) {
       />
 
       <Text style={styles.text}>Apunta con la camara al codigo QR</Text>
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      {scanned && <Button title={'Toca para escanear otra vez'} onPress={() => setScanned(false)} />}
     </View>
   );
 }

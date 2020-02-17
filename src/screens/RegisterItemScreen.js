@@ -1,8 +1,9 @@
 import React, {useState, useContext} from 'react';
-import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, Alert} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Picker, AsyncStorage} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
+import RNPickerSelect from 'react-native-picker-select';
 
 import Spacer from '../components/Spacer';
 import { Context as PostContex} from '../context/PostRequestContext';
@@ -12,10 +13,16 @@ import GetErrorMessages from "../variables/dataFieldNames"
 const ItemRegister = ({navigation}) => {
   const {state, postData, clearErrorMessage } = useContext(PostContex);
   const QrContext = useContext(QrCodeScannerContext);
-
-  console.log("QrCodeScannerContext: ")
-  console.log(QrContext)
   let qrHash = QrContext.state.qrCodeHash;
+
+  // https://snack.expo.io/@lfkwtz/react-native-picker-select
+  //https://www.npmjs.com/package/react-native-picker-select
+
+  const placeholder = {
+    label: 'Select a sport...',
+    value: null,
+    color: '#9EA0A4',
+  };
 
     return (
     <View >
@@ -24,20 +31,30 @@ const ItemRegister = ({navigation}) => {
         <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
         </Spacer>
 
+        <Button
+          buttonStyle={{backgroundColor: 'black'}}
+          title="Escanear Codigo Qr"
+          onPress={() =>{navigation.navigate('BarCode');
+          }}
+        />
+
         <Input 
           inputStyle={styles.input}
-          label='Codigo Qr'
           placeholder='Codigo Qr'
           disabled={true}
-          // onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
           value={qrHash}
           autoCorrect={false}
           />
-        <Button
-        title="Escanear Codigo Qr"
-        onPress={() =>{navigation.navigate('BarCode');
-                  }}
+
+          <RNPickerSelect
+            onValueChange={(value) => console.log(value)}
+            placeholder={placeholder}
+            items={[
+                { label: 'Football', value: 'football' },
+                { label: 'Baseball', value: 'baseball' },
+                { label: 'Hockey', value: 'hockey' },
+            ]}
         />
 
     </View>

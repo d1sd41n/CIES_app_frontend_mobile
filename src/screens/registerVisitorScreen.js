@@ -72,7 +72,6 @@ const registerVisitor = ({navigation}) => {
         title="Registrar Visitante"
         onPress={async () =>{
           let company_id = await AsyncStorage.getItem('company_id');
-          console.log(company_id)
           postData({dni, first_name, last_name, email, phone}, 
                     url='/core/companies/' + company_id + '/visitors/')
                   }}
