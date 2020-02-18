@@ -8,12 +8,17 @@ import RNPickerSelect from 'react-native-picker-select';
 import Spacer from '../components/Spacer';
 import { Context as PostContex} from '../context/PostRequestContext';
 import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
+import { Context as TypeBrandsContext} from '../context/GetTypeBrandsContext';
 import GetErrorMessages from "../variables/dataFieldNames"
 
 const ItemRegister = ({navigation}) => {
   const {state, postData, clearErrorMessage } = useContext(PostContex);
   const QrContext = useContext(QrCodeScannerContext);
+  const TypeBContext = useContext(TypeBrandsContext);
   let qrHash = QrContext.state.qrCodeHash;
+
+  console.log("TypeBrandsContext");
+  console.log(TypeBContext);
 
   // https://snack.expo.io/@lfkwtz/react-native-picker-select
   //https://www.npmjs.com/package/react-native-picker-select
