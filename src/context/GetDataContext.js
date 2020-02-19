@@ -25,12 +25,16 @@ const authReducer = (state, action) => {
 }
 
 // const postData  = (dispatch) =>  ({data, url}) => {
-const getTypeItem  = (dispatch) =>  async () => {
+const getData  = (dispatch) =>  async () => {
     // dispatch({type: 'loading'});
     let token = await AsyncStorage.getItem('token');
     // let token = await AsyncStorage.getItem('token');
 
     // const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
+
+    console.log("getDatagetDatagetDatagetData")
+    console.log(backendUrl)
+
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Token ' + token,
@@ -42,8 +46,11 @@ const getTypeItem  = (dispatch) =>  async () => {
             console.log(res);
         })
         .catch(err => {
-            let error = err.response.data;
-            console.log(err.response);
+            console.log(err)
+            console.log("eeeeeeeeeeeerrrrrrrrrrrorrrrrrrrrrrrrrrrrr")
+            // let error = err.response.data;
+            // console.log(err)
+            // console.log(err.response);
             // dispatch({type: 'add_error', payload: error});
         })
 }
@@ -54,6 +61,6 @@ const clearErrorMessage = dispatch => () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    {clearErrorMessage, getTypeItem},
+    {clearErrorMessage, getData},
     {errorMessage: null, loading: false, postSuccess: false}
 );

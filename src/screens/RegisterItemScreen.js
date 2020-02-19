@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, Picker, AsyncStorage} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,17 +8,22 @@ import RNPickerSelect from 'react-native-picker-select';
 import Spacer from '../components/Spacer';
 import { Context as PostContex} from '../context/PostRequestContext';
 import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
-import { Context as TypeBrandsContext} from '../context/GetTypeBrandsContext';
+import { Context as GetDataContext} from '../context/GetDataContext';
 import GetErrorMessages from "../variables/dataFieldNames"
 
 const ItemRegister = ({navigation}) => {
   const {state, postData, clearErrorMessage } = useContext(PostContex);
   const QrContext = useContext(QrCodeScannerContext);
-  const TypeBContext = useContext(TypeBrandsContext);
+  const GetContext = useContext(GetDataContext);
   let qrHash = QrContext.state.qrCodeHash;
 
-  console.log("TypeBrandsContext");
-  console.log(TypeBContext);
+  console.log("GetContext");
+  console.log(GetContext);
+
+  useEffect(() => {
+    GetContext.getData();
+    console.log("wsssssdsdd")
+  }, []);
 
   // https://snack.expo.io/@lfkwtz/react-native-picker-select
   //https://www.npmjs.com/package/react-native-picker-select
