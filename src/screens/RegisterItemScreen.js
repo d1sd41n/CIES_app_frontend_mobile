@@ -21,8 +21,10 @@ const ItemRegister = ({navigation}) => {
   console.log(GetContext);
 
   useEffect(() => {
-    GetContext.getData();
-    console.log("wsssssdsdd")
+    let url = '/items/companies/1/typeitem/';
+    GetContext.getData(url);
+    // GetContext.getData();
+    // console.log("wsssssdsdd")
   }, []);
 
   // https://snack.expo.io/@lfkwtz/react-native-picker-select
@@ -60,11 +62,7 @@ const ItemRegister = ({navigation}) => {
           <RNPickerSelect
             onValueChange={(value) => console.log(value)}
             placeholder={placeholder}
-            items={[
-                { label: 'Football', value: 'football' },
-                { label: 'Baseball', value: 'baseball' },
-                { label: 'Hockey', value: 'hockey' },
-            ]}
+            items={GetContext.state.data}
         />
 
     </View>
