@@ -15,7 +15,7 @@ const authReducer = (state, action) => {
         case 'add_error':
             return {...state, errorMessage: action.payload, loading: false};
         case 'getTypeSuccess':
-             return {errorMessage: '', loading: false, getSuccess: true, data: action.payload};
+             return {errorMessage: '', loading: false, getTypeSuccess: true, data: action.payload};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, getSuccess: false};
         default:
@@ -26,7 +26,6 @@ const authReducer = (state, action) => {
 
 
 const typeDataParser = (data) => {
-    console.log("typeDataPrsertypeDataPrsertypeDataPrsertypeDataPrsertypeDataPrsertypeDataPrser")
 
     let i;
     for(i = 0; i < data.length; i++){
@@ -79,7 +78,7 @@ const clearErrorMessage = dispatch => () => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     {clearErrorMessage, getData},
-    {errorMessage: null,
+    {typeErrorMessage: null,
         loading: false,
         getBrandSuccess: false,
         typeData: null,

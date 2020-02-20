@@ -21,7 +21,6 @@ const authReducer = (state, action) => {
         default:
             return state;
     }
-
 }
 
 // const postData  = (dispatch) =>  ({data, url}) => {

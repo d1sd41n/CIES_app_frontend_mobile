@@ -1,11 +1,12 @@
 import React, {useState, useContext, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, Picker, AsyncStorage} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, AsyncStorage} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import RNPickerSelect from 'react-native-picker-select';
 
 import Spacer from '../components/Spacer';
+import Picker from '../components/Picker';
 import { Context as PostContex} from '../context/PostRequestContext';
 import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
@@ -23,15 +24,13 @@ const ItemRegister = ({navigation}) => {
   useEffect(() => {
     let url = '/items/companies/1/typeitem/';
     GetContext.getData(url);
-    // GetContext.getData();
-    // console.log("wsssssdsdd")
   }, []);
 
   // https://snack.expo.io/@lfkwtz/react-native-picker-select
   //https://www.npmjs.com/package/react-native-picker-select
 
   const placeholder = {
-    label: 'Select a sport...',
+    label: 'Tipo de elemento',
     value: null,
     color: '#9EA0A4',
   };
@@ -59,11 +58,9 @@ const ItemRegister = ({navigation}) => {
           autoCorrect={false}
           />
 
-          <RNPickerSelect
-            onValueChange={(value) => console.log(value)}
-            placeholder={placeholder}
-            items={GetContext.state.data}
-        />
+          {state.errorMessage ? 
+          <Picker data={GetContext.state.data} label={'Tipo de elemento'}/>
+          : null}
 
     </View>
     );

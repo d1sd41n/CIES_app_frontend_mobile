@@ -51,7 +51,7 @@ const switchNavigator = createSwitchNavigator({
             BarCode: BarCodeReaderScreen,
             }),
             navigationOptions: {
-              drawerLabel: "Registrar Objeto"
+              drawerLabel: "Registrar Elemento"
             }
         },
       },{
