@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, AsyncStorage} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
@@ -23,7 +23,7 @@ const ItemRegister = ({navigation}) => {
 
   useEffect(() => {
     let url = '/items/companies/1/typeitem/';
-    GetContext.getData(url);
+    GetContext.getData(url, 'typeitem');
   }, []);
 
   // https://snack.expo.io/@lfkwtz/react-native-picker-select
@@ -57,10 +57,12 @@ const ItemRegister = ({navigation}) => {
           value={qrHash}
           autoCorrect={false}
           />
-
-          {state.errorMessage ? 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+          {GetContext.state.getTypeSuccess  ? 
           <Picker data={GetContext.state.data} label={'Tipo de elemento'}/>
-          : null}
+          : GetContext.state.loadingGeType  ? 
+          <ActivityIndicator size="large" color="#0000ff" />
+          : <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>}
 
     </View>
     );

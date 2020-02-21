@@ -12,10 +12,12 @@ const authReducer = (state, action) => {
     switch (action.type) {
         case 'loading':
             return {...state, loading: true, errorMessage: '', getSuccess: false};
+        case 'loadingGeType':
+            return {...state, loadingGeType: true, getTypeSuccess: false};
         case 'add_error':
             return {...state, errorMessage: action.payload, loading: false};
         case 'getTypeSuccess':
-             return {errorMessage: '', loading: false, getTypeSuccess: true, data: action.payload};
+             return {errorMessage: '', loadingGeType: false, getTypeSuccess: true, data: action.payload};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, getSuccess: false};
         default:
@@ -46,8 +48,12 @@ const getData  = (dispatch) =>  async(url, type='') => {
 
     // const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
 
-    // console.log("getDatagetDatagetDatagetData")
-    // console.log(backendUrl)
+    console.log("getDatagetDatagetDatagetData")
+    console.log(type);
+
+    if (type == "typeitem"){
+        dispatch({type: 'loadingGeType'});
+    }
 
     const headers = {
         'Content-Type': 'application/json',
@@ -59,7 +65,10 @@ const getData  = (dispatch) =>  async(url, type='') => {
             // dispatch({type: 'post_success'});
             let data = res.data;
             data = typeDataParser(data);
-            dispatch({type: 'getTypeSuccess', payload: data});
+
+            if (type == "typeitem"){
+                dispatch({type: 'getTypeSuccess', payload: data});
+            }
         })
         .catch(err => {
             console.log(err)
@@ -80,6 +89,7 @@ export const { Provider, Context } = createDataContext(
     {clearErrorMessage, getData},
     {typeErrorMessage: null,
         loading: false,
+        loadingGeType: false,
         getBrandSuccess: false,
         typeData: null,
         getTypeSuccess: false,
