@@ -62,7 +62,9 @@ const ItemRegister = ({navigation}) => {
           <Picker data={GetContext.state.data} label={'Tipo de elemento'}/>
           : GetContext.state.loadingGeType  ? 
           <ActivityIndicator size="large" color="#0000ff" />
-          : <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>}
+          : GetContext.state.typeDataError ?
+          <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>
+          : null }
 
     </View>
     );

@@ -10,14 +10,12 @@ import axios from 'axios';
 
 const authReducer = (state, action) => {
     switch (action.type) {
-        case 'loading':
-            return {...state, loading: true, errorMessage: '', getSuccess: false};
         case 'loadingGeType':
-            return {...state, loadingGeType: true, getTypeSuccess: false};
-        case 'add_error':
-            return {...state, errorMessage: action.payload, loading: false};
+            return {...state, loadingGeType: true, getTypeSuccess: false, typeDataError: false,};
         case 'getTypeSuccess':
-             return {errorMessage: '', loadingGeType: false, getTypeSuccess: true, data: action.payload};
+            return {...state, loadingGeType: false, getTypeSuccess: true, data: action.payload};
+        case 'typeDataError':
+            return {...state, loadingGeType: false, getTypeSuccess: false, typeDataError: true};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, getSuccess: false};
         default:
@@ -73,6 +71,9 @@ const getData  = (dispatch) =>  async(url, type='') => {
         .catch(err => {
             console.log(err)
             console.log("eeeeeeeeeeeerrrrrrrrrrrorrrrrrrrrrrrrrrrrr")
+            if (type == "typeitem"){
+                dispatch({type: 'typeDataError'});
+            }
             // let error = err.response.data;
             // console.log(err)
             // console.log(err.response);
@@ -93,6 +94,7 @@ export const { Provider, Context } = createDataContext(
         getBrandSuccess: false,
         typeData: null,
         getTypeSuccess: false,
-        typeData: null
+        typeDataError: false,
+
     }
 );
