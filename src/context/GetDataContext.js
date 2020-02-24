@@ -11,11 +11,11 @@ import axios from 'axios';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'loadingGeType':
-            return {...state, loadingGeType: true, getTypeSuccess: false, typeDataError: false,};
+            return {...state, loadingGeType: true, getTypeSuccess: false, typeDataError: false, typeData: null};
         case 'getTypeSuccess':
-            return {...state, loadingGeType: false, getTypeSuccess: true, data: action.payload};
+            return {...state, loadingGeType: false, getTypeSuccess: true, typeData: action.payload};
         case 'typeDataError':
-            return {...state, loadingGeType: false, getTypeSuccess: false, typeDataError: true};
+            return {...state, loadingGeType: false, getTypeSuccess: false, typeDataError: true, typeData: null};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, getSuccess: false};
         default:
@@ -39,18 +39,16 @@ const typeDataParser = (data) => {
 }
 
 const getData  = (dispatch) =>  async(url, type='') => {
-    // dispatch({type: 'loading'});
+
     let token = await AsyncStorage.getItem('token');
-
-    // let token = await AsyncStorage.getItem('token');
-
-    // const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
-
     console.log("getDatagetDatagetDatagetData")
     console.log(type);
 
     if (type == "typeitem"){
         dispatch({type: 'loadingGeType'});
+    }
+    else if (type == "branditem"){
+        console.log("branditem")
     }
 
     const headers = {
@@ -62,11 +60,15 @@ const getData  = (dispatch) =>  async(url, type='') => {
         .then(res => {
             // dispatch({type: 'post_success'});
             let data = res.data;
-            data = typeDataParser(data);
 
             if (type == "typeitem"){
+                data = typeDataParser(data);
                 dispatch({type: 'getTypeSuccess', payload: data});
             }
+            else if (type == "branditem"){
+                console.log(data);
+            }
+        
         })
         .catch(err => {
             console.log(err)
@@ -74,6 +76,9 @@ const getData  = (dispatch) =>  async(url, type='') => {
             if (type == "typeitem"){
                 dispatch({type: 'typeDataError'});
             }
+            // else if (type == "branditem"){
+            //     console.log(data);
+            // }
             // let error = err.response.data;
             // console.log(err)
             // console.log(err.response);

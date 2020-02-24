@@ -10,7 +10,8 @@ import Picker from '../components/Picker';
 import { Context as PostContex} from '../context/PostRequestContext';
 import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
-import GetErrorMessages from "../variables/dataFieldNames"
+import GetErrorMessages from "../variables/dataFieldNames";
+
 
 const ItemRegister = ({navigation}) => {
   const {state, postData, clearErrorMessage } = useContext(PostContex);
@@ -21,15 +22,18 @@ const ItemRegister = ({navigation}) => {
   console.log("GetContext");
   console.log(GetContext);
 
-  useEffect(() => {
-    let url = '/items/companies/1/typeitem/';
+  const fetchTypeItemData = async () => {
+    const company_id = await AsyncStorage.getItem('company_id');
+    let url = '/items/companies/' + company_id +'/typeitem/';
     GetContext.getData(url, 'typeitem');
+  };
+
+  useEffect(() => {
+    fetchTypeItemData();
   }, []);
 
-  // https://snack.expo.io/@lfkwtz/react-native-picker-select
-  //https://www.npmjs.com/package/react-native-picker-select
 
-  const placeholder = {
+  const typePlaceholder = {
     label: 'Tipo de elemento',
     value: null,
     color: '#9EA0A4',
@@ -59,12 +63,22 @@ const ItemRegister = ({navigation}) => {
           />
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
           {GetContext.state.getTypeSuccess  ? 
-          <Picker data={GetContext.state.data} label={'Tipo de elemento'}/>
+          <RNPickerSelect
+              onValueChange={async (typeItemId) =>{
+                const company_id = await AsyncStorage.getItem('company_id');
+                let url = '/items/companies/' + company_id + '/typeitem/' + typeItemId + '/brand/';
+                GetContext.getData(url, 'branditem');
+              }}
+              placeholder={typePlaceholder}
+              items={GetContext.state.typeData}
+            />
           : GetContext.state.loadingGeType  ? 
           <ActivityIndicator size="large" color="#0000ff" />
           : GetContext.state.typeDataError ?
-          <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>
-          : null }
+          <>
+            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>
+          </>
+          : <Picker data={[]} label={'Tipo de elemento (No hay datos disponibles)'}/> }
 
     </View>
     );
