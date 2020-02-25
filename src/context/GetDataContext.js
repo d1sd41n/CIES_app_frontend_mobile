@@ -10,12 +10,18 @@ import axios from 'axios';
 
 const authReducer = (state, action) => {
     switch (action.type) {
-        case 'loadingGeType':
-            return {...state, loadingGeType: true, getTypeSuccess: false, typeDataError: false, typeData: null};
+        case 'loadingGetType':
+            return {...state, loadingGetType: true, getTypeSuccess: false, typeDataError: false, typeData: null};
         case 'getTypeSuccess':
-            return {...state, loadingGeType: false, getTypeSuccess: true, typeData: action.payload};
+            return {...state, loadingGetType: false, getTypeSuccess: true, typeData: action.payload, typeDataError: false};
         case 'typeDataError':
-            return {...state, loadingGeType: false, getTypeSuccess: false, typeDataError: true, typeData: null};
+            return {...state, loadingGetType: false, getTypeSuccess: false, typeDataError: true, typeData: null};
+        case 'getBrandSuccess':
+            return {...state, loadingGetBrand: false, getBrandSuccess: true, brandData: action.payload, brandDataError: false};
+        case 'loadingGetBrand':
+            return {...state, loadingGetBrand: true, getBrandSuccess: false, brandDataError: false, brandData: null};
+        case 'typeDataError':
+            return {...state, loadingGetBrand: false, getBrandSuccess: false, brandDataError: true, brandData: null};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, getSuccess: false};
         default:
@@ -45,7 +51,7 @@ const getData  = (dispatch) =>  async(url, type='') => {
     console.log(type);
 
     if (type == "typeitem"){
-        dispatch({type: 'loadingGeType'});
+        dispatch({type: 'loadingGetType'});
     }
     else if (type == "branditem"){
         console.log("branditem")
@@ -95,11 +101,14 @@ export const { Provider, Context } = createDataContext(
     {clearErrorMessage, getData},
     {typeErrorMessage: null,
         loading: false,
-        loadingGeType: false,
+        loadingGetType: false,
+        loadingGetBrand: false,
         getBrandSuccess: false,
         typeData: null,
+        brandData: null,
         getTypeSuccess: false,
         typeDataError: false,
+        brandDataError: false,
 
     }
 );

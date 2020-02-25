@@ -72,7 +72,7 @@ const ItemRegister = ({navigation}) => {
               placeholder={typePlaceholder}
               items={GetContext.state.typeData}
             />
-          : GetContext.state.loadingGeType  ? 
+          : GetContext.state.loadingGetType  ? 
           <ActivityIndicator size="large" color="#0000ff" />
           : GetContext.state.typeDataError ?
           <>
