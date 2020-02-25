@@ -16,12 +16,14 @@ const authReducer = (state, action) => {
             return {...state, loadingGetType: false, getTypeSuccess: true, typeData: action.payload, typeDataError: false};
         case 'typeDataError':
             return {...state, loadingGetType: false, getTypeSuccess: false, typeDataError: true, typeData: null};
+
         case 'getBrandSuccess':
             return {...state, loadingGetBrand: false, getBrandSuccess: true, brandData: action.payload, brandDataError: false};
         case 'loadingGetBrand':
             return {...state, loadingGetBrand: true, getBrandSuccess: false, brandDataError: false, brandData: null};
-        case 'typeDataError':
+        case 'brandDataError':
             return {...state, loadingGetBrand: false, getBrandSuccess: false, brandDataError: true, brandData: null};
+
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, getSuccess: false};
         default:
@@ -31,13 +33,19 @@ const authReducer = (state, action) => {
 }
 
 
-const typeDataParser = (data) => {
+const typeDataParser = (data, type) => {
 
     let i;
     for(i = 0; i < data.length; i++){
-        data[i].label = data[i]['kind'];
+        if (type == "typeitem"){
+            data[i].label = data[i]['kind'];
+            delete data[i].kind;
+        }
+        else if(type == "branditem"){
+            data[i].label = data[i]['brand'];
+            delete data[i].brand;
+        }
         data[i].value = data[i]['id'];
-        delete data[i].kind;
         delete data[i].id;
     }
     return data;
@@ -54,7 +62,7 @@ const getData  = (dispatch) =>  async(url, type='') => {
         dispatch({type: 'loadingGetType'});
     }
     else if (type == "branditem"){
-        console.log("branditem")
+        dispatch({type: 'loadingGetBrand'});
     }
 
     const headers = {
@@ -68,11 +76,12 @@ const getData  = (dispatch) =>  async(url, type='') => {
             let data = res.data;
 
             if (type == "typeitem"){
-                data = typeDataParser(data);
+                data = typeDataParser(data, type);
                 dispatch({type: 'getTypeSuccess', payload: data});
             }
             else if (type == "branditem"){
-                console.log(data);
+                data = typeDataParser(data, type);
+                dispatch({type: 'getBrandSuccess', payload: data});
             }
         
         })
@@ -101,13 +110,14 @@ export const { Provider, Context } = createDataContext(
     {clearErrorMessage, getData},
     {typeErrorMessage: null,
         loading: false,
+        getTypeSuccess: false,
+        typeData: null,
+        typeDataError: false,
         loadingGetType: false,
+
         loadingGetBrand: false,
         getBrandSuccess: false,
-        typeData: null,
         brandData: null,
-        getTypeSuccess: false,
-        typeDataError: false,
         brandDataError: false,
 
     }

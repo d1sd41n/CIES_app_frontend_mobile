@@ -39,6 +39,12 @@ const ItemRegister = ({navigation}) => {
     color: '#9EA0A4',
   };
 
+  const brandPlaceholder = {
+    label: 'Marca',
+    value: null,
+    color: '#9EA0A4',
+  };
+
     return (
     <View >
         <Spacer>
@@ -52,7 +58,6 @@ const ItemRegister = ({navigation}) => {
           onPress={() =>{navigation.navigate('BarCode');
           }}
         />
-
         <Input 
           inputStyle={styles.input}
           placeholder='Codigo Qr'
@@ -78,7 +83,59 @@ const ItemRegister = ({navigation}) => {
           <>
             <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>
           </>
-          : <Picker data={[]} label={'Tipo de elemento (No hay datos disponibles)'}/> }
+          : <Picker data={[]} label={'Tipo de elemento'}/> }
+
+
+          {GetContext.state.getBrandSuccess  ? 
+          <RNPickerSelect
+              onValueChange={async (typeItemId) =>{
+                console.log(typeItemId)
+              }}
+              placeholder={brandPlaceholder}
+              items={GetContext.state.brandData}
+            />
+          : GetContext.state.loadingGetBrand  ? 
+          <ActivityIndicator size="large" color="#0000ff" />
+          : GetContext.state.brandDataError ?
+          <>
+            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>
+          </>
+          : <Picker data={[]} label={'Marca del objeto'}/> }
+      <Input 
+          inputStyle={styles.input}
+          placeholder='Color'
+          // disabled={true}
+          autoCapitalize="none"
+          // value={qrHash}
+          autoCorrect={false}
+          />
+
+      <Input 
+          inputStyle={styles.input}
+          placeholder='Referencia'
+          // disabled={true}
+          autoCapitalize="none"
+          // value={qrHash}
+          autoCorrect={false}
+          />
+
+      <Input 
+          inputStyle={styles.input}
+          placeholder='Descripcion'
+          // disabled={true}
+          autoCapitalize="none"
+          // value={qrHash}
+          autoCorrect={false}
+          />
+      <Spacer />
+
+      <Button
+        title="Registrar Objeto"
+        onPress={async () =>{
+          console.log("nada")
+                  }}
+        >
+      </Button>
 
     </View>
     );
@@ -103,6 +160,10 @@ const styles = StyleSheet.create({
   postSuccess: {
     color: "green",
     textAlign: 'center'
+  },
+  input: {
+    marginTop: 10,
+    marginHorizontal: 3
   },
 });
 
