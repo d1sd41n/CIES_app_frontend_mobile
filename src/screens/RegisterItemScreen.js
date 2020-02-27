@@ -1,9 +1,10 @@
 import React, {useState, useContext, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator, ScrollView  } from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 import RNPickerSelect from 'react-native-picker-select';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Spacer from '../components/Spacer';
 import Picker from '../components/Picker';
@@ -46,7 +47,9 @@ const ItemRegister = ({navigation}) => {
   };
 
     return (
-    <View >
+      <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
+   keyboardShouldPersistTaps='handled'>
+    <ScrollView  >
         <Spacer>
         <Text h3>Registrar Objeto</Text>
         <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
@@ -127,6 +130,23 @@ const ItemRegister = ({navigation}) => {
           // value={qrHash}
           autoCorrect={false}
           />
+      <Input 
+          inputStyle={styles.input}
+          placeholder='Descripcion'
+          // disabled={true}
+          autoCapitalize="none"
+          // value={qrHash}
+          autoCorrect={false}
+          />
+
+      <Input 
+          inputStyle={styles.input}
+          placeholder='Descripcion'
+          // disabled={true}
+          autoCapitalize="none"
+          // value={qrHash}
+          autoCorrect={false}
+          />
       <Spacer />
 
       <Button
@@ -137,7 +157,8 @@ const ItemRegister = ({navigation}) => {
         >
       </Button>
 
-    </View>
+    </ScrollView >
+    </KeyboardAwareScrollView>
     );
 }
 
