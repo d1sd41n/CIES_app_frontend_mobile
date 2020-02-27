@@ -55,8 +55,6 @@ const typeDataParser = (data, type) => {
 const getData  = (dispatch) =>  async(url, type='') => {
 
     let token = await AsyncStorage.getItem('token');
-    console.log("getDatagetDatagetDatagetData")
-    console.log(type);
 
     if (type == "typeitem"){
         dispatch({type: 'loadingGetType'});

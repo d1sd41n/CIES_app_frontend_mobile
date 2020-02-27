@@ -9,7 +9,7 @@ import axios from 'axios';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'loading':
-            return {...state, loading: true};
+            return {...state, loading: true, errorMessage: ''};
         case 'add_error':
             return {...state, errorMessage: action.payload, loading: false};
         case 'signin':
@@ -73,12 +73,16 @@ const signin = (dispatch) =>  ({username, password}) => {
     })
     .catch(err => {
         let errorMessage = null;
-        if(err.response.data.non_field_errors || err.response.data.password){
-            errorMessage = 'Las credenciales ingresadas son incorrectas';
+        if (err.response){
+            if(err.response.data.non_field_errors || err.response.data.password)
+                errorMessage = 'Las credenciales ingresadas son incorrectas';
         }
-        else{
-            errorMessage = "Ha ocurrido un error " + err.message;
+
+        else if(err.message == "Network Error"){
+            errorMessage = "Ojo, no hay coneccion a internet";
         }
+        else
+            errorMessage = "Ha ocurrido un error | " + err.message + " |";
 
         dispatch({type: 'add_error', payload: errorMessage});
     })

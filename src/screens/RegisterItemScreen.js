@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator, ScrollView  } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
@@ -20,8 +20,11 @@ const ItemRegister = ({navigation}) => {
   const GetContext = useContext(GetDataContext);
   let qrHash = QrContext.state.qrCodeHash;
 
-  console.log("GetContext");
-  console.log(GetContext);
+  const [type_item, setType] = useState(null);
+  const [brand, setBrand] = useState(null);
+  const [color, setColor] = useState('');
+  const [reference, setReference] = useState('');
+  const [description, setDescription] = useState('');
 
   const fetchTypeItemData = async () => {
     const company_id = await AsyncStorage.getItem('company_id');
@@ -48,8 +51,7 @@ const ItemRegister = ({navigation}) => {
 
     return (
       <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
-   keyboardShouldPersistTaps='handled'>
-    <ScrollView  >
+          keyboardShouldPersistTaps='handled'>
         <Spacer>
         <Text h3>Registrar Objeto</Text>
         <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
@@ -76,6 +78,9 @@ const ItemRegister = ({navigation}) => {
                 const company_id = await AsyncStorage.getItem('company_id');
                 let url = '/items/companies/' + company_id + '/typeitem/' + typeItemId + '/brand/';
                 GetContext.getData(url, 'branditem');
+                setType(typeItemId);
+                // setBrand(typeItemId);
+                // setBrand(null);
               }}
               placeholder={typePlaceholder}
               items={GetContext.state.typeData}
@@ -84,15 +89,16 @@ const ItemRegister = ({navigation}) => {
           <ActivityIndicator size="large" color="#0000ff" />
           : GetContext.state.typeDataError ?
           <>
-            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>
+            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente no hay internet</Text>
           </>
           : <Picker data={[]} label={'Tipo de elemento'}/> }
 
 
           {GetContext.state.getBrandSuccess  ? 
           <RNPickerSelect
-              onValueChange={async (typeItemId) =>{
-                console.log(typeItemId)
+              onValueChange={(brandItemId) =>{
+                console.log(typeof brandItemId)
+                setBrand(brandItemId);
               }}
               placeholder={brandPlaceholder}
               items={GetContext.state.brandData}
@@ -101,22 +107,21 @@ const ItemRegister = ({navigation}) => {
           <ActivityIndicator size="large" color="#0000ff" />
           : GetContext.state.brandDataError ?
           <>
-            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente hay internet</Text>
+            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente no hay internet</Text>
           </>
           : <Picker data={[]} label={'Marca del objeto'}/> }
       <Input 
           inputStyle={styles.input}
           placeholder='Color'
-          // disabled={true}
+          onChangeText={(newColor) => setColor(newColor)}
           autoCapitalize="none"
-          // value={qrHash}
           autoCorrect={false}
           />
 
       <Input 
           inputStyle={styles.input}
           placeholder='Referencia'
-          // disabled={true}
+          onChangeText={(newReference) => setReference(newReference)}
           autoCapitalize="none"
           // value={qrHash}
           autoCorrect={false}
@@ -125,26 +130,9 @@ const ItemRegister = ({navigation}) => {
       <Input 
           inputStyle={styles.input}
           placeholder='Descripcion'
-          // disabled={true}
+          onChangeText={(newDescription) => setDescription(newDescription)}
           autoCapitalize="none"
-          // value={qrHash}
-          autoCorrect={false}
-          />
-      <Input 
-          inputStyle={styles.input}
-          placeholder='Descripcion'
-          // disabled={true}
-          autoCapitalize="none"
-          // value={qrHash}
-          autoCorrect={false}
-          />
-
-      <Input 
-          inputStyle={styles.input}
-          placeholder='Descripcion'
-          // disabled={true}
-          autoCapitalize="none"
-          // value={qrHash}
+          // value={qrHash}description
           autoCorrect={false}
           />
       <Spacer />
@@ -152,12 +140,14 @@ const ItemRegister = ({navigation}) => {
       <Button
         title="Registrar Objeto"
         onPress={async () =>{
-          console.log("nada")
-                  }}
+          let company_id = await AsyncStorage.getItem('company_id');
+          let seat_id = await AsyncStorage.getItem('seat_id');
+          let url = "/items/companies/" + company_id + "/seats/" + seat_id + "/registeritem/"
+          postData({reference, color, description, type_item, code: qrHash,"owner": 1, brand},
+            url=url)
+          }}
         >
       </Button>
-
-    </ScrollView >
     </KeyboardAwareScrollView>
     );
 }

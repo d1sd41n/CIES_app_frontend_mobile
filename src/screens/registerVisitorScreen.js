@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, Al
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Spacer from '../components/Spacer';
 import { Context } from '../context/PostRequestContext';
@@ -17,7 +18,8 @@ const registerVisitor = ({navigation}) => {
   const [phone, setPhone] = useState('');
 
   return (
-    <View >
+    <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
+          keyboardShouldPersistTaps='handled'>
       <NavigationEvents 
         onWillBlur={clearErrorMessage}/>
       <Spacer>
@@ -80,7 +82,7 @@ const registerVisitor = ({navigation}) => {
       {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}
       {state.postSuccess ? <Text style={styles.postSuccess}>El visitante ha sido registrado con exito</Text>: null}
 
-    </View>
+      </KeyboardAwareScrollView>
   );
 }
 

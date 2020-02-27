@@ -25,6 +25,20 @@ const authReducer = (state, action) => {
 
 // const postData  = (dispatch) =>  ({data, url}) => {
 const postData  = (dispatch) =>  async (data, url) => {
+
+    console.log(data)
+    console.log(url)
+    console.log(backendUrl + url)
+    // data = {
+
+    //     "reference": "referencia del item",
+    //     "color": "rosado",
+    //     "description": "descripcion del item",
+    //     "type_item": 2,
+    //     "code": "ffa85243-f6a0-4535-b193-171b8197a486",
+    //     "owner": 1,
+    //     "brand": 14,
+    //     }
     dispatch({type: 'loading'});
     let token = await AsyncStorage.getItem('token');
 
@@ -39,7 +53,9 @@ const postData  = (dispatch) =>  async (data, url) => {
             dispatch({type: 'post_success'});
         })
         .catch(err => {
+            console.log(err)
             let error = err.response.data;
+            console.log(error)
             dispatch({type: 'add_error', payload: error});
         })
 }

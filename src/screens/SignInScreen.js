@@ -7,9 +7,6 @@ import Spacer from '../components/Spacer';
 
 import { Context as AuthContext } from '../context/AuthContext';
 
-
-// import { FlatList } from 'react-native-gesture-handler';
-
 const SignInScreen = ({navigation}) => {
   const {state, signin, clearErrorMessage } = useContext(AuthContext);
   const [username, setUsername] = useState('');
@@ -48,6 +45,7 @@ const SignInScreen = ({navigation}) => {
       </Button>
       </Spacer>
     </View>
+    
   );
 }
 
