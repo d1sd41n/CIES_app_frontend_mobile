@@ -23,6 +23,7 @@ const ItemRegister = ({navigation}) => {
   const [type_item, setType] = useState(null);
   const [brand, setBrand] = useState(null);
   const [color, setColor] = useState('');
+  const [dni, setDni] = useState('');
   const [reference, setReference] = useState('');
   const [description, setDescription] = useState('');
 
@@ -135,6 +136,14 @@ const ItemRegister = ({navigation}) => {
           // value={qrHash}description
           autoCorrect={false}
           />
+      <Input 
+          keyboardType={'numeric'}
+          inputStyle={styles.input}
+          placeholder='Cedula/dni del propietario'
+          onChangeText={(newDni) => setDni(newDni)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
       <Spacer />
 
       <Button
@@ -143,7 +152,7 @@ const ItemRegister = ({navigation}) => {
           let company_id = await AsyncStorage.getItem('company_id');
           let seat_id = await AsyncStorage.getItem('seat_id');
           let url = "/items/companies/" + company_id + "/seats/" + seat_id + "/registeritem/"
-          postData({reference, color, description, type_item, code: qrHash,"owner": 1, brand},
+          postData({reference, color, description, type_item, code: qrHash,"owner": dni, brand},
             url=url)
           }}
         >
