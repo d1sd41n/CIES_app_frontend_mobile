@@ -9,16 +9,16 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Spacer from '../components/Spacer';
 import Picker from '../components/Picker';
 import { Context as PostContex} from '../context/PostRequestContext';
-import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
+import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
 import GetErrorMessages from "../variables/dataFieldNames";
 
 
 const ItemRegister = ({navigation}) => {
   const {state, postData, clearErrorMessage } = useContext(PostContex);
-  const QrContext = useContext(QrCodeScannerContext);
+  const UtilContext = useContext(ExtraUtilContext);
   const GetContext = useContext(GetDataContext);
-  let qrHash = QrContext.state.qrCodeHash;
+  let qrHash = UtilContext.state.qrCodeHash;
 
   const [type_item, setType] = useState(null);
   const [brand, setBrand] = useState(null);
@@ -136,12 +136,20 @@ const ItemRegister = ({navigation}) => {
           // value={qrHash}description
           autoCorrect={false}
           />
+      <Spacer />
+      <Button
+          buttonStyle={{backgroundColor: 'black'}}
+          title="Seleccionar visitante"
+          onPress={() =>{navigation.navigate('VisitorList');
+          }}
+        />
       <Input 
           keyboardType={'numeric'}
           inputStyle={styles.input}
-          placeholder='Cedula/dni del propietario'
+          placeholder='Visitante propietario'
           onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
+          disabled={true}
           autoCorrect={false}
           />
       <Spacer />
@@ -157,6 +165,7 @@ const ItemRegister = ({navigation}) => {
           }}
         >
       </Button>
+      <Spacer />
     </KeyboardAwareScrollView>
     );
 }

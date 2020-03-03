@@ -3,13 +3,13 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 
-import { Context as QrCodeScannerContext} from '../context/QrCodeScannerContext';
+import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 
 
 export default function BarCodeReader({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const {state, saveQrCodeHash }  = useContext(QrCodeScannerContext);
+  const {state, saveQrCodeHash }  = useContext(ExtraUtilContext);
 
   useEffect(() => {
     (async () => {

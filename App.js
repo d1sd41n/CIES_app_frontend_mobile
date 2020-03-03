@@ -12,10 +12,11 @@ import registerVisitorScreen from './src/screens/registerVisitorScreen';
 import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import RegisterItemScreen from './src/screens/RegisterItemScreen';
 import BarCodeReaderScreen from './src/screens/BarCodeReaderScreen';
+import VisitorsListScreen from './src/screens/VisitorsListScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
-import { Provider as QrCodeScannerProvider } from './src/context/QrCodeScannerContext';
+import { Provider as ExtraUtilContext } from './src/context/ExtraUtilContext';
 import { Provider as GetDataProvider } from './src/context/GetDataContext';
 
 import { setNavigator } from './src/navigationRef';
@@ -49,6 +50,7 @@ const switchNavigator = createSwitchNavigator({
           screen: createStackNavigator({
             itemRegister: RegisterItemScreen,
             BarCode: BarCodeReaderScreen,
+            VisitorList: VisitorsListScreen,
             }),
             navigationOptions: {
               drawerLabel: "Registrar Elemento"
@@ -67,13 +69,13 @@ const App = createAppContainer(switchNavigator);
 export default() => {
   return(
     <GetDataProvider>
-      <QrCodeScannerProvider>
+      <ExtraUtilContext>
         <PostRequestProvider>
           <AuthProvider>
             <App ref={(navigator) => { setNavigator(navigator) }}/>
           </AuthProvider>
         </PostRequestProvider>
-      </QrCodeScannerProvider>
+      </ExtraUtilContext>
     </GetDataProvider>
   )
 }

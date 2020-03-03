@@ -10,6 +10,13 @@ import axios from 'axios';
 
 const authReducer = (state, action) => {
     switch (action.type) {
+        case 'loading':
+            return {...state, loading: true, getDataSuccess: false, error: false, data: null};
+        case 'getDataSuccess':
+            return {...state, loading: false, getDataSuccess: true, data: action.payload, error: false};
+        case 'error':
+            return {...state, loading: false, getDataSuccess: false, error: true, data: null};
+
         case 'loadingGetType':
             return {...state, loadingGetType: true, getTypeSuccess: false, typeDataError: false, typeData: null};
         case 'getTypeSuccess':
@@ -89,9 +96,9 @@ const getData  = (dispatch) =>  async(url, type='') => {
             if (type == "typeitem"){
                 dispatch({type: 'typeDataError'});
             }
-            // else if (type == "branditem"){
-            //     console.log(data);
-            // }
+            else if (type == "branditem"){
+                dispatch({type: 'brandDataError'});
+            }
             // let error = err.response.data;
             // console.log(err)
             // console.log(err.response);
@@ -106,8 +113,11 @@ const clearErrorMessage = dispatch => () => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     {clearErrorMessage, getData},
-    {typeErrorMessage: null,
-        loading: false,
+    {   loading: false,
+        getDataSuccess: false,
+        data: null,
+        error: false,
+
         getTypeSuccess: false,
         typeData: null,
         typeDataError: false,
