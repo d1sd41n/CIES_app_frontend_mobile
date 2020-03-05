@@ -69,6 +69,9 @@ const getData  = (dispatch) =>  async(url, type='') => {
     else if (type == "branditem"){
         dispatch({type: 'loadingGetBrand'});
     }
+    else{
+        dispatch({type: 'loading'});
+    }
 
     const headers = {
         'Content-Type': 'application/json',
@@ -80,6 +83,8 @@ const getData  = (dispatch) =>  async(url, type='') => {
             // dispatch({type: 'post_success'});
             let data = res.data;
 
+            // console.log(res.data)
+
             if (type == "typeitem"){
                 data = typeDataParser(data, type);
                 dispatch({type: 'getTypeSuccess', payload: data});
@@ -87,6 +92,9 @@ const getData  = (dispatch) =>  async(url, type='') => {
             else if (type == "branditem"){
                 data = typeDataParser(data, type);
                 dispatch({type: 'getBrandSuccess', payload: data});
+            }
+            else{
+                dispatch({type: 'getDataSuccess', payload: data});
             }
         
         })
@@ -98,6 +106,9 @@ const getData  = (dispatch) =>  async(url, type='') => {
             }
             else if (type == "branditem"){
                 dispatch({type: 'brandDataError'});
+            }
+            else{
+                dispatch({type: 'error'});
             }
             // let error = err.response.data;
             // console.log(err)
@@ -127,6 +138,5 @@ export const { Provider, Context } = createDataContext(
         getBrandSuccess: false,
         brandData: null,
         brandDataError: false,
-
     }
 );
