@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
-import { ListItem, SearchBar } from "react-native-elements";
+import { ListItem, SearchBar, Button } from "react-native-elements";
 // http://www.coderzheaven.com/2019/12/28/flatlist-filtering-in-flatlist-spread-operators-in-react-native/
 
 
 const VisitorsList = () => {
   const GetContext = useContext(GetDataContext);
   const {state, getData } = useContext(GetDataContext);
-  // const [search, setUpdateSearch] = useState('');
+  const [search, setSearch] = useState('');
 
   console.log("sssss", state)
 
@@ -24,19 +24,24 @@ const VisitorsList = () => {
     fetchTypeItemData();
   }, []);
 
-  const renderHeader = () => {
-    return <SearchBar placeholder="Search Here..."
-        lightTheme editable={true}
-        // value={search}
-        // onChangeText={this.updateSearch} 
-        />; 
-}; 
-
   return (
     <View style={styles.container}>
+      <SearchBar placeholder="Buscar..."
+        lightTheme editable={true}
+        value={search}
+        onChangeText={(text) => {
+          setSearch(text);
+        }}
+        />
+      <Button
+          buttonStyle={{backgroundColor: 'black'}}
+          title="Buscar visitante"
+          onPress={() =>{
+            console.log(search)
+          }}
+        />
       {state.getDataSuccess  ? 
         <FlatList
-        ListHeaderComponent={renderHeader}
           data={state.data}
           keyExtractor={item => item.dni}
           renderItem={({item}) => {
@@ -53,10 +58,8 @@ const VisitorsList = () => {
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
+  container: {
+   flex: 1,
   },
   item: {
     padding: 10,
