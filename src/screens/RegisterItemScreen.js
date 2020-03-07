@@ -19,6 +19,9 @@ const ItemRegister = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
   const GetContext = useContext(GetDataContext);
   let qrHash = UtilContext.state.qrCodeHash;
+  let visitorData = UtilContext.state.visitorData;
+
+  // console.log("visitor", data)
 
   const [type_item, setType] = useState(null);
   const [brand, setBrand] = useState(null);
@@ -98,7 +101,6 @@ const ItemRegister = ({navigation}) => {
           {GetContext.state.getBrandSuccess  ? 
           <RNPickerSelect
               onValueChange={(brandItemId) =>{
-                console.log(typeof brandItemId)
                 setBrand(brandItemId);
               }}
               placeholder={brandPlaceholder}
@@ -143,15 +145,18 @@ const ItemRegister = ({navigation}) => {
           onPress={() =>{navigation.navigate('VisitorList');
           }}
         />
+
+      {visitorData  ?
       <Input 
-          keyboardType={'numeric'}
           inputStyle={styles.input}
           placeholder='Visitante propietario'
           onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
+          value={visitorData.first_name}
           disabled={true}
           autoCorrect={false}
           />
+      : null}
       <Spacer />
 
       <Button

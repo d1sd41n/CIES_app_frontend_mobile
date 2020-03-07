@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { FlatList, StyleSheet, View, AsyncStorage, ActivityIndicator, Alert, TouchableHighlight } from 'react-native';
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
-import { ListItem, SearchBar, Button } from "react-native-elements";
-// http://www.coderzheaven.com/2019/12/28/flatlist-filtering-in-flatlist-spread-operators-in-react-native/
+import { ListItem, SearchBar, Button, Text,  } from "react-native-elements";
+import Spacer from '../components/Spacer';
 
 
 const VisitorsList = () => {
-  const GetContext = useContext(GetDataContext);
+  const UtilContext = useContext(ExtraUtilContext);
   const {state, getData } = useContext(GetDataContext);
   const [search, setSearch] = useState('');
 
-  console.log("sssss", state)
+
+  // console.log(UtilContext)
 
 
   const fetchTypeItemData = async () => {
@@ -20,7 +21,20 @@ const VisitorsList = () => {
     getData(url);
   };
 
+  const searchVisitor = async () => {
+    const company_id = await AsyncStorage.getItem('company_id');
+    let url = '/core/companies/' + company_id + '/visitors/?search='+search;
+    getData(url);
+  };
+
+  const saveVisitor =  ({item}) => {
+    UtilContext.saveVisitorData(item);
+  };
+
   useEffect(() => {
+    Alert.alert(
+         'Buscar Visitante', "Haga la busqueda usando apellido, cedula o nombre, luego pulse sobre el visitante"
+      )
     fetchTypeItemData();
   }, []);
 
@@ -36,9 +50,7 @@ const VisitorsList = () => {
       <Button
           buttonStyle={{backgroundColor: 'black'}}
           title="Buscar visitante"
-          onPress={() =>{
-            console.log(search)
-          }}
+          onPress={searchVisitor}
         />
       {state.getDataSuccess  ? 
         <FlatList
@@ -46,12 +58,29 @@ const VisitorsList = () => {
           keyExtractor={item => item.dni}
           renderItem={({item}) => {
             return (
-              <>
-              <Text style={styles.item}>{item.first_name}</Text>
-              </>
+              <TouchableHighlight
+                onPress={() =>saveVisitor({item})}
+                >
+                <View style={{backgroundColor: 'white'}}>
+                  <ListItem
+                          roundAvatar
+                          title={`${item.first_name} ${item.last_name}`}
+                          subtitle={`${item.dni}`}
+                        />
+                </View>
+              </TouchableHighlight>
               )
             }}
         />
+      : state.loading  ?
+          <>
+            <Text style={styles.loading}>Buscando datos en el servidor</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </>
+      : state.error ?
+          <>
+            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente no hay internet</Text>
+          </>
       : null}
       </View>
   );
@@ -65,6 +94,18 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
+  },
+  loading: {
+    padding: 10,
+    fontSize: 18,
+    textAlign: 'center',
+    color: "blue",
+  },
+  errorMessage: {
+    padding: 10,
+    fontSize: 18,
+    textAlign: 'center',
+    color: 'red'
   },
 })
 

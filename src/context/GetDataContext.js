@@ -99,8 +99,6 @@ const getData  = (dispatch) =>  async(url, type='') => {
         
         })
         .catch(err => {
-            console.log(err)
-            console.log("eeeeeeeeeeeerrrrrrrrrrrorrrrrrrrrrrrrrrrrr")
             if (type == "typeitem"){
                 dispatch({type: 'typeDataError'});
             }

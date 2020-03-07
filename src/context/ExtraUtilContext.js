@@ -12,7 +12,10 @@ const authReducer = (state, action) => {
         case 'saveCode':
             return {qrCodeHash: action.payload};
         case 'deleteCode':
-                return {qrCodeHash: ''};
+            return {visitorData: ''};
+        
+        case 'saveVisitor':
+            return {visitorData: action.payload};
         default:
             return state;
     }
@@ -26,8 +29,14 @@ const deleteQrCodeHash = dispatch => () => {
     dispatch({type: 'deleteCode'})
 };
 
+const saveVisitorData = dispatch => (visitorData) => {
+    dispatch({type: 'saveVisitor', payload: visitorData})
+};
+
+
 export const { Provider, Context } = createDataContext(
     authReducer,
-    {saveQrCodeHash},
-    {qrCodeHash: '', }
+    {saveQrCodeHash, saveVisitorData},
+    {qrCodeHash: '',
+    visitorData: null}
 );
