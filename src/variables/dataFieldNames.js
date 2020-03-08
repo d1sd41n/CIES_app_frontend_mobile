@@ -9,7 +9,14 @@ var dataFieldNames = {
     "email": "Email",
     "password": "Contraceña",
     "type": "Tipo de usuario",
-    "dni": "Cedula"
+    "dni": "Cedula",
+    "reference": "Referencia",
+    "color": "color",
+    "description": "Descripcion",
+    "type_item": "Tipo de elemento",
+    "code": "Codigo Qr",
+    "owner": "visitante",
+    "brand": "Marca"
     };
 
 

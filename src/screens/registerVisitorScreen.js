@@ -41,7 +41,7 @@ const registerVisitor = ({navigation}) => {
           autoCapitalize="none"
           autoCorrect={false}
           />
-        <Input 
+      <Input 
           inputStyle={styles.input}
           placeholder='Apellidos'
           onChangeText={(newLastName) => setLast_name(newLastName)}

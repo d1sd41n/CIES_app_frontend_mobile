@@ -3,16 +3,12 @@ import { FlatList, StyleSheet, View, AsyncStorage, ActivityIndicator, Alert, Tou
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
 import { ListItem, SearchBar, Button, Text,  } from "react-native-elements";
-import Spacer from '../components/Spacer';
 
 
 const VisitorsList = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
   const {state, getData } = useContext(GetDataContext);
   const [search, setSearch] = useState('');
-
-
-  console.log(navigation)
 
 
   const fetchTypeItemData = async () => {
@@ -29,6 +25,9 @@ const VisitorsList = ({navigation}) => {
 
   const saveVisitor =  ({item}) => {
     UtilContext.saveVisitorData(item);
+    Alert.alert(
+      'Visitante selecciondo', item.first_name + " " + item.last_name
+   )
     navigation.navigate('itemRegister')
   };
 

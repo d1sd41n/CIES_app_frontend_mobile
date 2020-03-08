@@ -26,7 +26,6 @@ const authReducer = (state, action) => {
 // const postData  = (dispatch) =>  ({data, url}) => {
 const postData  = (dispatch) =>  async (data, url) => {
 
-    console.log(data)
     dispatch({type: 'loading'});
     let token = await AsyncStorage.getItem('token');
 
@@ -41,9 +40,7 @@ const postData  = (dispatch) =>  async (data, url) => {
             dispatch({type: 'post_success'});
         })
         .catch(err => {
-            console.log(err)
             let error = err.response.data;
-            console.log(error)
             dispatch({type: 'add_error', payload: error});
         })
 }

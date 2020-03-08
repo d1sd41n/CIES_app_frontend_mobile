@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator, Alert} from 'react-native';
 import { Text, Input, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
@@ -21,8 +21,6 @@ const ItemRegister = ({navigation}) => {
   let qrHash = UtilContext.state.qrCodeHash;
   let visitorData = UtilContext.state.visitorData;
 
-  console.log(state)
-
   const [type_item, setType] = useState(null);
   const [brand, setBrand] = useState(null);
   const [color, setColor] = useState('');
@@ -40,6 +38,16 @@ const ItemRegister = ({navigation}) => {
     fetchTypeItemData();
   }, []);
 
+  const  isUUID = ( uuid ) => {
+    let s = "" + uuid;
+
+    s = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
+    if (s === null) {
+      return false;
+    }
+    return true;
+}
+
 
   const typePlaceholder = {
     label: 'Tipo de elemento',
@@ -56,6 +64,8 @@ const ItemRegister = ({navigation}) => {
     return (
       <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
           keyboardShouldPersistTaps='handled'>
+        <NavigationEvents 
+          onWillBlur={clearErrorMessage}/>
         <Spacer>
         <Text h3>Registrar Objeto</Text>
         <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>
@@ -83,8 +93,7 @@ const ItemRegister = ({navigation}) => {
                 let url = '/items/companies/' + company_id + '/typeitem/' + typeItemId + '/brand/';
                 GetContext.getData(url, 'branditem');
                 setType(typeItemId);
-                // setBrand(typeItemId);
-                // setBrand(null);
+                setBrand(null);
               }}
               placeholder={typePlaceholder}
               items={GetContext.state.typeData}
@@ -126,7 +135,6 @@ const ItemRegister = ({navigation}) => {
           placeholder='Referencia'
           onChangeText={(newReference) => setReference(newReference)}
           autoCapitalize="none"
-          // value={qrHash}
           autoCorrect={false}
           />
 
@@ -135,7 +143,6 @@ const ItemRegister = ({navigation}) => {
           placeholder='Descripcion'
           onChangeText={(newDescription) => setDescription(newDescription)}
           autoCapitalize="none"
-          // value={qrHash}description
           autoCorrect={false}
           />
       <Spacer />
@@ -166,15 +173,38 @@ const ItemRegister = ({navigation}) => {
           <Spacer />
         </>
         : null}
-
+      {state.errorMessage ? 
+        <>
+          <GetErrorMessages data={state.errorMessage} />
+          <Spacer />
+        </>
+        : null}
+      {state.postSuccess ? 
+        <>
+          <Text style={styles.postSuccess}>El objeto ha sido registrado con exito</Text>
+          <Spacer />
+        </>
+      : null}
       <Button
         title="Registrar Objeto"
         onPress={async () =>{
           let company_id = await AsyncStorage.getItem('company_id');
           let seat_id = await AsyncStorage.getItem('seat_id');
-          let url = "/items/companies/" + company_id + "/seats/" + seat_id + "/registeritem/"
-          postData({reference, color, description, type_item, code: qrHash, "owner": visitorData.id, brand},
-            url=url)
+          let url = "/items/companies/" + company_id + "/seats/" + seat_id + "/registeritem/";
+          if (type_item == null || brand == null){
+            Alert.alert(
+              'Atencion', 'Porfavor seleccione el tipo de objeto y la marca'
+           )
+          }
+          else if(!isUUID(qrHash)){
+            Alert.alert(
+              'Atencion', 'Porfavor escanee un codigo qr valido'
+           )
+          }
+          else{
+            postData({reference, color, description, type_item, code: qrHash, "owner": visitorData.id, brand},
+              url=url)
+          }
           }}
         >
       </Button>
