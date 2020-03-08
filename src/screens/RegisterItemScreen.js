@@ -21,7 +21,7 @@ const ItemRegister = ({navigation}) => {
   let qrHash = UtilContext.state.qrCodeHash;
   let visitorData = UtilContext.state.visitorData;
 
-  // console.log("visitor", data)
+  console.log(state)
 
   const [type_item, setType] = useState(null);
   const [brand, setBrand] = useState(null);
@@ -62,7 +62,7 @@ const ItemRegister = ({navigation}) => {
         </Spacer>
 
         <Button
-          buttonStyle={{backgroundColor: 'black'}}
+          buttonStyle={styles.buttonItems}
           title="Escanear Codigo Qr"
           onPress={() =>{navigation.navigate('BarCode');
           }}
@@ -140,7 +140,7 @@ const ItemRegister = ({navigation}) => {
           />
       <Spacer />
       <Button
-          buttonStyle={{backgroundColor: 'black'}}
+          buttonStyle={styles.buttonItems}
           title="Seleccionar visitante"
           onPress={() =>{navigation.navigate('VisitorList');
           }}
@@ -152,12 +152,20 @@ const ItemRegister = ({navigation}) => {
           placeholder='Visitante propietario'
           onChangeText={(newDni) => setDni(newDni)}
           autoCapitalize="none"
-          value={visitorData.first_name}
+          value={visitorData.first_name + " " + visitorData.last_name}
           disabled={true}
           autoCorrect={false}
           />
       : null}
       <Spacer />
+
+      {state.loading ?
+        <>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={styles.loadingText}>Registrando objeto</Text>
+          <Spacer />
+        </>
+        : null}
 
       <Button
         title="Registrar Objeto"
@@ -165,7 +173,7 @@ const ItemRegister = ({navigation}) => {
           let company_id = await AsyncStorage.getItem('company_id');
           let seat_id = await AsyncStorage.getItem('seat_id');
           let url = "/items/companies/" + company_id + "/seats/" + seat_id + "/registeritem/"
-          postData({reference, color, description, type_item, code: qrHash,"owner": dni, brand},
+          postData({reference, color, description, type_item, code: qrHash, "owner": visitorData.id, brand},
             url=url)
           }}
         >
@@ -199,6 +207,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: 3
   },
+  buttonItems:  {
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    backgroundColor: 'black'
+   }
 });
 
 ItemRegister.navigationOptions = ({navigation}) => {

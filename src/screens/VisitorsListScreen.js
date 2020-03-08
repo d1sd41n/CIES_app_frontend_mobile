@@ -6,13 +6,13 @@ import { ListItem, SearchBar, Button, Text,  } from "react-native-elements";
 import Spacer from '../components/Spacer';
 
 
-const VisitorsList = () => {
+const VisitorsList = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
   const {state, getData } = useContext(GetDataContext);
   const [search, setSearch] = useState('');
 
 
-  // console.log(UtilContext)
+  console.log(navigation)
 
 
   const fetchTypeItemData = async () => {
@@ -29,6 +29,7 @@ const VisitorsList = () => {
 
   const saveVisitor =  ({item}) => {
     UtilContext.saveVisitorData(item);
+    navigation.navigate('itemRegister')
   };
 
   useEffect(() => {

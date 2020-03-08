@@ -27,18 +27,6 @@ const authReducer = (state, action) => {
 const postData  = (dispatch) =>  async (data, url) => {
 
     console.log(data)
-    console.log(url)
-    console.log(backendUrl + url)
-    // data = {
-
-    //     "reference": "referencia del item",
-    //     "color": "rosado",
-    //     "description": "descripcion del item",
-    //     "type_item": 2,
-    //     "code": "ffa85243-f6a0-4535-b193-171b8197a486",
-    //     "owner": 1,
-    //     "brand": 14,
-    //     }
     dispatch({type: 'loading'});
     let token = await AsyncStorage.getItem('token');
 

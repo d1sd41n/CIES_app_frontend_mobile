@@ -10,12 +10,12 @@ import axios from 'axios';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'saveCode':
-            return {qrCodeHash: action.payload};
+            return {...state, qrCodeHash: action.payload};
         case 'deleteCode':
-            return {visitorData: ''};
+            return {...state, visitorData: ''};
         
         case 'saveVisitor':
-            return {visitorData: action.payload};
+            return {...state, visitorData: action.payload};
         default:
             return state;
     }
