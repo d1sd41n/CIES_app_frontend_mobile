@@ -13,6 +13,7 @@ import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import RegisterItemScreen from './src/screens/RegisterItemScreen';
 import BarCodeReaderScreen from './src/screens/BarCodeReaderScreen';
 import VisitorsListScreen from './src/screens/VisitorsListScreen';
+import RecordsScreen from './src/screens/recordsScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
@@ -54,6 +55,14 @@ const switchNavigator = createSwitchNavigator({
             }),
             navigationOptions: {
               drawerLabel: "Registrar Elemento"
+            }
+        },
+        seeRecords: {
+          screen: createStackNavigator({
+            recordScreen: RecordsScreen,
+            }),
+            navigationOptions: {
+              drawerLabel: "Ver historial"
             }
         },
       },{
