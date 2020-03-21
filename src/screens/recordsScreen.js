@@ -1,63 +1,100 @@
-import React, {useState, useContext} from 'react';
-import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, FlatList} from 'react-native';
-import { Text, Input, Button} from 'react-native-elements';
+import React, {useEffect, useContext} from 'react';
+import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, FlatList, TouchableHighlight} from 'react-native';
+import { Text, Input, ListItem} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 import Spacer from '../components/Spacer';
 import { Context as GetDataContext} from '../context/GetDataContext';
 
 
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-  ];
-
-
-  function Item({ title }) {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-    );
-  }
 
 const objectRecord = ({navigation}) => {
+    const {state, getData } = useContext(GetDataContext);
+    var options = { month: 'long', day: 'numeric', };
+
+    console.log(state.data)
 
     const fetchTypeItemData = async () => {
         const company_id = await AsyncStorage.getItem('company_id');
         const seat_id = await AsyncStorage.getItem('seat_id');
-        let url = '/core/companies/' + company_id + '/visitors/';
+        let url = '/items/companies/' + company_id + '/seats/' + seat_id + '/check/';
         getData(url);
       };
     
-    //   useEffect(() => {
-    //     fetchTypeItemData();
-    //   }, []);
+      useEffect(() => {
+        fetchTypeItemData();
+      }, []);
+
+
+      const dateParser =  (rawDate) => {
+        let date = new Date(rawDate)
+        let formatted_date = date.toLocaleDateString() +
+                             " " + date.getHours() +
+                             ":" + date.getMinutes()
+        return formatted_date;
+      };
 
   return (
     <View>
+        {state.getDataSuccess  ? 
         <FlatList
-        data={DATA}
-        renderItem={({ item }) => <Item title={item.title} />}
-        keyExtractor={item => item.id}
-      />
+          data={state.data}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => {
+            return (
+              <TouchableHighlight
+                onPress={() =>saveVisitor({item})}
+                >
+                <View style={styles.listElem}>
+                  <Text style={styles.name}>{item.owner_name} {item.owner_last_name}</Text>
+                  <Text>Cedula: {item.owner_dni}</Text>
+                  <Text>Marca: {item.brand}</Text>
+                  <Text>Referencia: {item.reference}</Text>
+                  {item.go_in  ? 
+                    <Text style={styles.entra}>Accion: Entra</Text>
+                  : <Text style={styles.sale}>Accion: Sale</Text>}
+                  <Text style={styles.date}>{dateParser(item.date)}</Text>
+                </View>
+              </TouchableHighlight>
+              )
+            }}
+        />
+      : state.loading  ?
+          <>
+            <Text style={styles.loading}>Buscando datos en el servidor</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </>
+      : state.error ?
+          <>
+            <Text style={styles.errorMessage}>No se pudieron descargar los datos, posiblemente no hay internet</Text>
+          </>
+      : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  subtitleText: {
+  listElem: {
+    backgroundColor: 'white',
+    marginTop: 10,
+    marginLeft: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: 'darkgray',
+    marginRight: 20,
+    paddingBottom: 10,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold'
+},
+  date: {
       color: "gray"
+  },
+  entra: {
+    color: "green"
+  },
+  sale: {
+    color: "blue"
   },
   errorMessage: {
     fontSize: 16,
