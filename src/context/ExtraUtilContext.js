@@ -12,8 +12,7 @@ const authReducer = (state, action) => {
         case 'saveCode':
             return {...state, qrCodeHash: action.payload};
         case 'deleteCode':
-            return {...state, visitorData: ''};
-        
+            return {...state, qrCodeHash: ''};
         case 'saveVisitor':
             return {...state, visitorData: action.payload};
         default:
@@ -36,7 +35,7 @@ const saveVisitorData = dispatch => (visitorData) => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    {saveQrCodeHash, saveVisitorData},
+    {saveQrCodeHash, saveVisitorData, deleteQrCodeHash},
     {qrCodeHash: '',
     visitorData: null}
 );

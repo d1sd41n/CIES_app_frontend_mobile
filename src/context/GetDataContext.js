@@ -32,7 +32,7 @@ const authReducer = (state, action) => {
             return {...state, loadingGetBrand: false, getBrandSuccess: false, brandDataError: true, brandData: null};
 
         case 'clear_error_message':
-            return {...state, errorMessage: '', loading: false, getSuccess: false};
+            return {...state, errorMessage: '', loading: false, getSuccess: false, data: null,};
         default:
             return state;
     }
@@ -108,10 +108,6 @@ const getData  = (dispatch) =>  async(url, type='') => {
             else{
                 dispatch({type: 'error'});
             }
-            // let error = err.response.data;
-            // console.log(err)
-            // console.log(err.response);
-            // dispatch({type: 'add_error', payload: error});
         })
 }
 

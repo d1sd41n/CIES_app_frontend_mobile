@@ -1,7 +1,8 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, FlatList, TouchableHighlight} from 'react-native';
-import { Text, Input, ListItem} from 'react-native-elements';
+import { Text, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigationEvents } from 'react-navigation';
 
 import Spacer from '../components/Spacer';
 import { Context as GetDataContext} from '../context/GetDataContext';
@@ -9,10 +10,9 @@ import { Context as GetDataContext} from '../context/GetDataContext';
 
 
 const objectRecord = ({navigation}) => {
-    const {state, getData } = useContext(GetDataContext);
+    const {state, getData, clearErrorMessage } = useContext(GetDataContext);
     var options = { month: 'long', day: 'numeric', };
-
-    console.log(state.data)
+    const [initialized, setInit] = useState(false);
 
     const fetchTypeItemData = async () => {
         const company_id = await AsyncStorage.getItem('company_id');
@@ -20,11 +20,6 @@ const objectRecord = ({navigation}) => {
         let url = '/items/companies/' + company_id + '/seats/' + seat_id + '/check/';
         getData(url);
       };
-    
-      useEffect(() => {
-        fetchTypeItemData();
-      }, []);
-
 
       const dateParser =  (rawDate) => {
         let date = new Date(rawDate)
@@ -35,16 +30,23 @@ const objectRecord = ({navigation}) => {
       };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
+      <NavigationEvents 
+          onWillBlur={clearErrorMessage}
+          onWillFocus={fetchTypeItemData}
+          />
+        <Button
+          buttonStyle={{backgroundColor: 'black', marginTop: 10, marginBottom: 10}}
+          title="Actualizar Historial"
+          onPress={fetchTypeItemData}
+        />
         {state.getDataSuccess  ? 
         <FlatList
+          // contentContainerStyle={{ paddingBottom: 60}}
           data={state.data}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => {
             return (
-              <TouchableHighlight
-                onPress={() =>saveVisitor({item})}
-                >
                 <View style={styles.listElem}>
                   <Text style={styles.name}>{item.owner_name} {item.owner_last_name}</Text>
                   <Text>Cedula: {item.owner_dni}</Text>
@@ -55,13 +57,12 @@ const objectRecord = ({navigation}) => {
                   : <Text style={styles.sale}>Accion: Sale</Text>}
                   <Text style={styles.date}>{dateParser(item.date)}</Text>
                 </View>
-              </TouchableHighlight>
               )
             }}
         />
       : state.loading  ?
           <>
-            <Text style={styles.loading}>Buscando datos en el servidor</Text>
+            <Text style={styles.loadingText}>Buscando datos en el servidor</Text>
             <ActivityIndicator size="large" color="#0000ff" />
           </>
       : state.error ?
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
       color: "gray"
   },
   entra: {
-    color: "green"
+    color: "purple"
   },
   sale: {
     color: "blue"
@@ -105,11 +106,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 3
   },
   loadingText: {
+    marginTop: 20,
     color: "blue",
-    textAlign: 'center'
-  },
-  postSuccess: {
-    color: "green",
     textAlign: 'center'
   },
 });

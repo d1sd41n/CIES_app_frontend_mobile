@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, AsyncStorage, ActivityIndicator, Alert, TouchableHighlight } from 'react-native';
+
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
 import { ListItem, SearchBar, Button, Text,  } from "react-native-elements";
+import { NavigationEvents } from 'react-navigation';
 
 
 const VisitorsList = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
-  const {state, getData } = useContext(GetDataContext);
+  const {state, getData, clearErrorMessage } = useContext(GetDataContext);
   const [search, setSearch] = useState('');
+  console.log(state.data)
 
 
   const fetchTypeItemData = async () => {
@@ -40,6 +43,8 @@ const VisitorsList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <NavigationEvents 
+          onWillBlur={clearErrorMessage}/>
       <SearchBar placeholder="Buscar..."
         lightTheme editable={true}
         value={search}

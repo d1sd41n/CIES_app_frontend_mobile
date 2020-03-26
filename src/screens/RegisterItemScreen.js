@@ -19,6 +19,7 @@ const ItemRegister = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
   const GetContext = useContext(GetDataContext);
   let qrHash = UtilContext.state.qrCodeHash;
+  let deleteQr = UtilContext.deleteQrCodeHash;
   let visitorData = UtilContext.state.visitorData;
 
   const [type_item, setType] = useState(null);
@@ -48,6 +49,11 @@ const ItemRegister = ({navigation}) => {
     return true;
 }
 
+  const  onWillBlur = () => {
+    clearErrorMessage()
+    deleteQr()
+  }
+
 
   const typePlaceholder = {
     label: 'Tipo de elemento',
@@ -65,7 +71,7 @@ const ItemRegister = ({navigation}) => {
       <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
           keyboardShouldPersistTaps='handled'>
         <NavigationEvents 
-          onWillBlur={clearErrorMessage}/>
+          onWillBlur={onWillBlur}/>
         <Spacer>
         <Text h3>Registrar Objeto</Text>
         <Text style={styles.subtitleText}>Todos los campos exepto telefono son obligatorios</Text>

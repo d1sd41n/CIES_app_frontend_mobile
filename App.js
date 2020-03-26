@@ -14,6 +14,7 @@ import RegisterItemScreen from './src/screens/RegisterItemScreen';
 import BarCodeReaderScreen from './src/screens/BarCodeReaderScreen';
 import VisitorsListScreen from './src/screens/VisitorsListScreen';
 import RecordsScreen from './src/screens/recordsScreen';
+import scannerScreen from './src/screens/scannerScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
@@ -37,6 +38,14 @@ const switchNavigator = createSwitchNavigator({
           navigationOptions: {
             drawerLabel: "Mi perfil"
           }
+        },
+        scanner: {
+          screen: createStackNavigator({
+            scanner1: scannerScreen,
+            }),
+            navigationOptions: {
+              drawerLabel: "Escanear"
+            }
         },
         visitorRegister: {
           screen: createStackNavigator({
