@@ -15,21 +15,22 @@ const authReducer = (state, action) => {
         case 'add_error':
             return {...state, errorMessage: action.payload, loading: false};
         case 'post_success':
-             return {errorMessage: '', loading: false, postSuccess: true};
+             return {...state, errorMessage: '', loading: false, postSuccess: true};
+        case 'get_res_data':
+             return {...state, errorMessage: '', loading: false, postSuccess: true, data: action.payload};
         case 'clear_error_message':
-            return {...state, errorMessage: '', loading: false, postSuccess: false};
+            return {...state, errorMessage: '', loading: false, postSuccess: false, data: null};
         default:
             return state;
     }
 }
 
-// const postData  = (dispatch) =>  ({data, url}) => {
-const postData  = (dispatch) =>  async (data, url) => {
+
+const postData  = (dispatch) =>  async (data, url, returnRes=false) => {
 
     dispatch({type: 'loading'});
     let token = await AsyncStorage.getItem('token');
 
-    // const token = "66bd598f3289fde2b7633f8e65587ae1f5673788";
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Token ' + token,
@@ -37,7 +38,14 @@ const postData  = (dispatch) =>  async (data, url) => {
         };
     axios.post(backendUrl + url, data, {headers})
         .then(res => {
-            dispatch({type: 'post_success'});
+            let data = res.data;
+            if(returnRes){
+                dispatch({type: 'get_res_data', payload: data});
+            }
+            else
+            {
+                dispatch({type: 'post_success'});
+            }
         })
         .catch(err => {
             let error = err.response.data;
@@ -52,5 +60,9 @@ const clearErrorMessage = dispatch => () => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     {clearErrorMessage, postData},
-    {errorMessage: null, loading: false, postSuccess: false}
+    {errorMessage: null,
+     loading: false,
+     postSuccess: false,
+     data: null,
+    }
 );

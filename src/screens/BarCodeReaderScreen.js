@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { NavigationEvents } from 'react-navigation';
 
 
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
@@ -9,7 +10,7 @@ import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 export default function BarCodeReader({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const {state, saveQrCodeHash }  = useContext(ExtraUtilContext);
+  const {state, saveQrCodeHash,  setTypeScan}  = useContext(ExtraUtilContext);
 
   useEffect(() => {
     (async () => {
@@ -22,7 +23,10 @@ export default function BarCodeReader({navigation}) {
     setScanned(true);
     alert(`EL codigo: ${data} se ha escaneado!`);
     saveQrCodeHash(data);
-    navigation.navigate('itemRegister')
+    if (state.typeScan == 1)
+      navigation.navigate('itemRegister');
+    else if(state.typeScan == 2)
+      navigation.navigate('scanner1');
   };
 
   if (hasPermission === null) {
@@ -39,6 +43,8 @@ export default function BarCodeReader({navigation}) {
         flexDirection: 'column',
         justifyContent: 'flex-end',
       }}>
+      <NavigationEvents 
+          onWillBlur={setTypeScan}/>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}

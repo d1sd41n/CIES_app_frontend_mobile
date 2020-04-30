@@ -15,6 +15,7 @@ import BarCodeReaderScreen from './src/screens/BarCodeReaderScreen';
 import VisitorsListScreen from './src/screens/VisitorsListScreen';
 import RecordsScreen from './src/screens/recordsScreen';
 import scannerScreen from './src/screens/scannerScreen';
+import scannerScreen2 from './src/screens/scannerScreen2';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';

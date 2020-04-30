@@ -80,7 +80,9 @@ const ItemRegister = ({navigation}) => {
         <Button
           buttonStyle={styles.buttonItems}
           title="Escanear Codigo Qr"
-          onPress={() =>{navigation.navigate('BarCode');
+          onPress={() =>{
+            UtilContext.setTypeScan(1);
+            navigation.navigate('BarCode');
           }}
         />
         <Input 

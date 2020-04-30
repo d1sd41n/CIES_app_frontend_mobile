@@ -1,10 +1,9 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, Alert} from 'react-native';
 import { Text, Input, Button, } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import RadioForm from 'react-native-simple-radio-button';
 
 import Spacer from '../components/Spacer';
 import { Context } from '../context/PostRequestContext';
@@ -13,20 +12,65 @@ import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 
 const registerVisitor = ({navigation}) => {
   const {state, postData, clearErrorMessage } = useContext(Context);
+  const [go_in, setGo_in] = useState('');
+
+
   const UtilContext = useContext(ExtraUtilContext);
   let qrHash = UtilContext.state.qrCodeHash;
   let deleteQr = UtilContext.deleteQrCodeHash;
 
   var radio_props = [
     {label: 'Entra', value: 1 },
-    {label: 'Sale', value: 0 }
+    {label: 'Sale', value: 2 }
   ];
 
+  const  onWillBlur = () => {
+    clearErrorMessage()
+    deleteQr()
+  }
+
+
+  const  isUUID = ( uuid ) => {
+    let s = "" + uuid;
+
+    s = s.match('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
+    if (s === null) {
+      return false;
+    }
+    return true;
+  }
+  console.log(state)
+
+  if (state.postSuccess) {
+    return (
+      <View style={styles.listElem}>
+        <NavigationEvents 
+          onWillBlur={onWillBlur}/>
+        <Spacer>
+        <Text style={styles.postSuccess}>Registro guardado con exito</Text>
+        </Spacer>
+        <Text style={styles.subtitleText}>Datos sobre el objeto:</Text>
+        <Spacer />
+        <Text>Nombre propietario: {state.data["owner_first_name"]}</Text>
+        <Spacer />
+        {/* <Text>Apellido propietario: {state.resData.owner_last_name}</Text>
+        <Spacer />
+        <Text>Cedula: {state.resData.owner_dni}</Text> */}
+        <Button
+            buttonStyle={styles.buttonItems}
+            title="Escanear Otro Item"
+            onPress={() =>{
+              clearErrorMessage()
+              deleteQr()
+            }}
+          />
+      </View>
+    )
+  }
   return (
-    <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
-          keyboardShouldPersistTaps='handled'>
+    <View>
       <NavigationEvents 
-        onWillBlur={clearErrorMessage}/>
+          onWillBlur={onWillBlur}/>
       <Spacer>
       <Text h3>Escanear</Text>
       <Text style={styles.subtitleText}>Escanea el codigo Qr del objeto</Text>
@@ -35,23 +79,25 @@ const registerVisitor = ({navigation}) => {
       <Text  style={styles.textRadio}>Accion</Text>
       <RadioForm
           radio_props={radio_props}
-          initial={0}
+          initial={-1}
           labelHorizontal={true}
           formHorizontal={false}
-          onPress={(value) => {console.log("sss")}}
+          onPress={(value) => {setGo_in(value)}}
         />
       </View>
       <Spacer />
       {state.loading ?
         <>
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Registrando visitante</Text>
+          <Text style={styles.loadingText}>Registrando el transito de este item</Text>
         </>
         : null}
       <Button
           buttonStyle={styles.buttonItems}
           title="Escanear Codigo Qr"
-          onPress={() =>{navigation.navigate('BarCode');
+          onPress={() =>{
+            UtilContext.setTypeScan(2);
+            navigation.navigate('BarCode');
           }}
         />
       <Spacer />
@@ -65,18 +111,35 @@ const registerVisitor = ({navigation}) => {
           />
         <Spacer />
       <Button
-        title="Registrar Visitante"
+        title="Registrar"
         onPress={async () =>{
+          let action = false;
+          let user_id = await AsyncStorage.getItem('user_id');
           let company_id = await AsyncStorage.getItem('company_id');
-          postData({dni, first_name, last_name, email, phone},
-                    url='/core/companies/' + company_id + '/visitors/')
+          let seat_id = await AsyncStorage.getItem('seat_id');
+          if(!isUUID(qrHash)){
+            Alert.alert(
+              'Atencion', 'Porfavor escanee un codigo qr valido'
+           )
+          }
+          else if(go_in != 1 && go_in != 2){
+            Alert.alert(
+              'Atencion', 'Porfavor seleccione una accion'
+           )
+          }
+          else{
+            if(go_in == 1){
+              action = true;
+            }
+          postData({"go_in": action, "code": qrHash, "seat": seat_id, "worker": user_id},
+                    url='/items/companies/' + company_id + '/seats/' + seat_id + '/check/',
+                    returnRes=true)
+          }
                   }}
         >
       </Button>
       {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}
-      {state.postSuccess ? <Text style={styles.postSuccess}>El visitante ha sido registrado con exito</Text>: null}
-
-      </KeyboardAwareScrollView>
+      </View>
   );
 }
 
@@ -105,7 +168,8 @@ const styles = StyleSheet.create({
   },
   postSuccess: {
     color: "green",
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 20,
   },
   buttonItems:  {
     marginLeft: 5,
@@ -113,6 +177,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'black'
    },
+   listElem: {
+    backgroundColor: 'white',
+    marginTop: 10,
+    marginLeft: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: 'darkgray',
+    marginRight: 20,
+    paddingBottom: 10,
+  },
 });
 
 registerVisitor.navigationOptions = ({navigation}) => {
