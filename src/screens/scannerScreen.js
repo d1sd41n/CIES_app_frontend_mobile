@@ -39,9 +39,16 @@ const registerVisitor = ({navigation}) => {
     }
     return true;
   }
-  console.log(state)
 
   if (state.postSuccess) {
+    let name = state.data["owner_first_name"] + " " + state.data["owner_last_name"]
+    let dni = state.data["owner_dni"]
+    let brand = state.data["brand"]
+    let color = state.data["color"]
+    let go_in = state.data["go_in"]
+    let lost = state.data["lost"]
+    let type = state.data["type"]
+
     return (
       <View style={styles.listElem}>
         <NavigationEvents 
@@ -51,11 +58,18 @@ const registerVisitor = ({navigation}) => {
         </Spacer>
         <Text style={styles.subtitleText}>Datos sobre el objeto:</Text>
         <Spacer />
-        <Text>Nombre propietario: {state.data["owner_first_name"]}</Text>
+        <Text style={styles.listElemText}>Nombre propietario: {name}</Text>
+        <Text style={styles.listElemText}>Cedula: {dni}</Text>
+        <Text style={styles.listElemText}>Tipo: {type}</Text>
+        <Text style={styles.listElemText}>Marca de objeto: {brand}</Text>
+        <Text style={styles.listElemText}>Color de objeto: {color}</Text>
+        {go_in  ? 
+          <Text style={styles.entra}>Accion: Entra</Text>
+        : <Text style={styles.sale}>Accion: Sale</Text>}
+        {lost  ? 
+          <Text style={styles.lost}>Atencion, este item se encuentra reportado como objeto perdido</Text>
+        : null}
         <Spacer />
-        {/* <Text>Apellido propietario: {state.resData.owner_last_name}</Text>
-        <Spacer />
-        <Text>Cedula: {state.resData.owner_dni}</Text> */}
         <Button
             buttonStyle={styles.buttonItems}
             title="Escanear Otro Item"
@@ -168,8 +182,7 @@ const styles = StyleSheet.create({
   },
   postSuccess: {
     color: "green",
-    textAlign: 'center',
-    fontSize: 20,
+    fontSize: 25,
   },
   buttonItems:  {
     marginLeft: 5,
@@ -185,6 +198,21 @@ const styles = StyleSheet.create({
     borderBottomColor: 'darkgray',
     marginRight: 20,
     paddingBottom: 10,
+  },
+  listElemText: {
+    fontSize: 18,
+  },
+  entra: {
+    fontSize: 18,
+    color: "purple"
+  },
+  sale: {
+    fontSize: 18,
+    color: "blue"
+  },
+  lost: {
+    color: "red",
+    fontSize: 22,
   },
 });
 

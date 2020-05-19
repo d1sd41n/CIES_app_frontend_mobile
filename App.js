@@ -15,7 +15,10 @@ import BarCodeReaderScreen from './src/screens/BarCodeReaderScreen';
 import VisitorsListScreen from './src/screens/VisitorsListScreen';
 import RecordsScreen from './src/screens/recordsScreen';
 import scannerScreen from './src/screens/scannerScreen';
-import scannerScreen2 from './src/screens/scannerScreen2';
+import searchItemScreem from './src/screens/searchItemScreem';
+import visitorsListScreenItems from './src/screens/visitorsListItemScreen';
+import visitorItemsScreen from './src/screens/visitorItemsScreem';
+
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
@@ -32,20 +35,30 @@ const switchNavigator = createSwitchNavigator({
        Signin: SignInScreen,
      }),
     mainFlow: createDrawerNavigator({
-      userScreen: {
-        screen: createStackNavigator({
-          accountScreen: AccountScreen,
-          }),
-          navigationOptions: {
-            drawerLabel: "Mi perfil"
-          }
+        userScreen: {
+          screen: createStackNavigator({
+            accountScreen: AccountScreen,
+            }),
+            navigationOptions: {
+              drawerLabel: "Mi perfil"
+            }
+        },
+        searchItems: {
+          screen: createStackNavigator({
+            searchItem: searchItemScreem,
+            visitorListItem: visitorsListScreenItems,
+            visitorItems: visitorItemsScreen,
+            }),
+            navigationOptions: {
+              drawerLabel: "Buscar objeto"
+            }
         },
         scanner: {
           screen: createStackNavigator({
             scanner1: scannerScreen,
             }),
             navigationOptions: {
-              drawerLabel: "Escanear"
+              drawerLabel: "Escanear entrada o salida"
             }
         },
         visitorRegister: {
@@ -64,7 +77,7 @@ const switchNavigator = createSwitchNavigator({
             VisitorList: VisitorsListScreen,
             }),
             navigationOptions: {
-              drawerLabel: "Registrar Elemento"
+              drawerLabel: "Registrar Objeto"
             }
         },
         seeRecords: {
@@ -75,6 +88,15 @@ const switchNavigator = createSwitchNavigator({
               drawerLabel: "Ver historial"
             }
         },
+        // searchItemBuVisitor: {
+        //   screen: createStackNavigator({
+        //     visitorListItem: visitorsListScreenItems,
+        //     visitorItems: visitorItemsScreen,
+        //     }),
+        //     navigationOptions: {
+        //       drawerLabel: "Buscar objeto por Visitante"
+        //     }
+        // },
       },{
         initialRouteName: 'visitorRegister',
       }

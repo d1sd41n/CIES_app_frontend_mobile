@@ -17,6 +17,8 @@ const authReducer = (state, action) => {
             return {...state, visitorData: action.payload};
         case 'setTypeScan':
             return {...state, typeScan: action.payload};
+        case 'setScannedTrue':
+                return {...state, qrScanned: true};
         default:
             return state;
     }
@@ -36,6 +38,10 @@ const saveVisitorData = dispatch => (visitorData) => {
 
 const setTypeScan = dispatch => (type = null) => {
     dispatch({type: 'setTypeScan', payload: type})
+};
+
+const setScannedTrue = dispatch => (type = null) => {
+    dispatch({type: 'setScannedTrue'})
 };
 
 

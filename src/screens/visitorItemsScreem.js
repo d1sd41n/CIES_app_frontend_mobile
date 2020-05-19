@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, AsyncStorage, ActivityIndicator, Alert, TouchableHighlight } from 'react-native';
+import { FlatList, StyleSheet, View, AsyncStorage,
+        ActivityIndicator, Alert, TouchableHighlight,
+        TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
@@ -11,9 +14,10 @@ const VisitorsList = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
   const {state, getData, clearErrorMessage } = useContext(GetDataContext);
   const [search, setSearch] = useState('');
-
-
-  const fetchTypeItemData = async () => {
+  
+  
+  const fetchVisitors = async () => {
+    console.log(UtilContext.state)
     const company_id = await AsyncStorage.getItem('company_id');
     let url = '/core/companies/' + company_id + '/visitors/';
     getData(url);
@@ -25,45 +29,32 @@ const VisitorsList = ({navigation}) => {
     getData(url);
   };
 
-  const saveVisitor =  ({item}) => {
-    UtilContext.saveVisitorData(item);
-    Alert.alert(
-      'Visitante selecciondo', item.first_name + " " + item.last_name
-   )
-    navigation.navigate('itemRegister')
+  const findItems =  ({item}) => {
+    // UtilContext.saveVisitorData(item);
+    // console.log(item)
+    navigation.navigate('visitorItems')
   };
 
   useEffect(() => {
     Alert.alert(
-         'Buscar Visitante', "Haga la busqueda usando apellido, cedula o nombre, luego pulse sobre el visitante"
+         'Buscar Visitante', "Haga la busqueda usando apellido, cedula o nombre, luego pulse sobre el visitante para ver sus objetos"
       )
-    fetchTypeItemData();
   }, []);
 
   return (
     <View style={styles.container}>
       <NavigationEvents 
-          onWillBlur={clearErrorMessage}/>
-      <SearchBar placeholder="Buscar..."
-        lightTheme editable={true}
-        value={search}
-        onChangeText={(text) => {
-          setSearch(text);
-        }}
-        />
-      <Button
-          buttonStyle={{backgroundColor: 'black'}}
-          title="Buscar visitante"
-          onPress={searchVisitor}
-        />
-      {state.getDataSuccess && state.data? 
+          onWillBlur={clearErrorMessage}
+          onWillFocus={fetchVisitors}/>
+      <Text h3 style={styles.titleText}>Items de:</Text>
+      {state.getDataSuccess  && state.data? 
         <FlatList
           data={state.data}
           keyExtractor={item => item.dni}
           renderItem={({item}) => {
             return (
               <TouchableHighlight
-                onPress={() =>saveVisitor({item})}
+                onPress={() =>findItems({item})}
                 >
                 <View style={{backgroundColor: 'white'}}>
                   <ListItem
@@ -112,5 +103,19 @@ const styles = StyleSheet.create({
     color: 'red'
   },
 })
+
+
+// VisitorsList.navigationOptions = ({navigation}) => {
+//   return {
+//   headerTitle: 
+
+//     <View style={{flex: 1, flexDirection: 'row', marginLeft: 16}}>
+//       <TouchableOpacity style={styles.button} onPress={()=>navigation.openDrawer()}>
+//         <Ionicons name='ios-menu' size={30} />
+//       </TouchableOpacity>
+//   </View>
+//   }
+// };
+
 
 export default VisitorsList;

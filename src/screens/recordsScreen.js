@@ -40,7 +40,7 @@ const objectRecord = ({navigation}) => {
           title="Actualizar Historial"
           onPress={fetchTypeItemData}
         />
-        {state.getDataSuccess  ? 
+        {state.getDataSuccess &&  state.data ? 
         <FlatList
           // contentContainerStyle={{ paddingBottom: 60}}
           data={state.data}
@@ -50,6 +50,7 @@ const objectRecord = ({navigation}) => {
                 <View style={styles.listElem}>
                   <Text style={styles.name}>{item.owner_name} {item.owner_last_name}</Text>
                   <Text>Cedula: {item.owner_dni}</Text>
+                  <Text>Tipo: {item.type_item}</Text>
                   <Text>Marca: {item.brand}</Text>
                   <Text>Referencia: {item.reference}</Text>
                   {item.go_in  ? 

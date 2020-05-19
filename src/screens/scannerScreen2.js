@@ -20,8 +20,6 @@ const registerVisitor = ({navigation}) => {
     clearErrorMessage()
   }
 
-  console.log(state)
-
   return (
     <View>
       <NavigationEvents 
