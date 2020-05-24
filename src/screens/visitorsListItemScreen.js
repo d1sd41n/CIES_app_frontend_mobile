@@ -18,6 +18,9 @@ const VisitorsList = ({navigation}) => {
 
 
   const fetchVisitors = async () => {
+    Alert.alert(
+      'Buscar Visitante', "Haga la busqueda usando apellido, cedula o nombre, luego pulse sobre el visitante para ver sus objetos"
+    )
     const company_id = await AsyncStorage.getItem('company_id');
     let url = '/core/companies/' + company_id + '/visitors/';
     getData(url);
@@ -30,16 +33,16 @@ const VisitorsList = ({navigation}) => {
   };
 
   const findItems =  ({item}) => {
+    // here we save the user data to send to the visitoritemsScrem
     UtilContext.saveVisitorData(item);
-    // console.log(item)
     navigation.navigate('visitorItems')
   };
 
-  useEffect(() => {
-    Alert.alert(
-         'Buscar Visitante', "Haga la busqueda usando apellido, cedula o nombre, luego pulse sobre el visitante para ver sus objetos"
-      )
-  }, []);
+  // useEffect(() => {
+  //   Alert.alert(
+  //        'Buscar Visitante', "Haga la busqueda usando apellido, cedula o nombre, luego pulse sobre el visitante para ver sus objetos"
+  //     )
+  // }, []);
 
   return (
     <View style={styles.container}>
@@ -95,6 +98,10 @@ const VisitorsList = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
    flex: 1,
+  },
+  textRadio: {
+    fontSize: 20,
+    marginBottom: 10
   },
   item: {
     padding: 10,

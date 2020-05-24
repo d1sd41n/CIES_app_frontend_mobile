@@ -1,19 +1,19 @@
-import React, { useContext, } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FlatList, StyleSheet, View, AsyncStorage,
-        ActivityIndicator, TouchableHighlight } from 'react-native';
+        ActivityIndicator, Alert, TouchableHighlight } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 
 import Spacer from '../components/Spacer';
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
-import { ListItem, Text, } from "react-native-elements";
+import { ListItem, SearchBar, Button, Text,  } from "react-native-elements";
 import { NavigationEvents } from 'react-navigation';
 
 
-const VisitorItemList = ({navigation}) => {
+const VisitorsList = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
   const {state, getData, clearErrorMessage } = useContext(GetDataContext);
-
+  console.log(UtilContext)
   const fetchItems = async () => {
     let visitor_dni= UtilContext.state.visitorData.dni;
     const company_id = await AsyncStorage.getItem('company_id');
@@ -23,30 +23,27 @@ const VisitorItemList = ({navigation}) => {
 
   const  onWillBlur = () => {
     clearErrorMessage()
-    UtilContext.delVisitorData()
   }
 
   const seeItem =  ({item}) => {
     UtilContext.saveData(item);
-    navigation.navigate('editItem')
+    console.log(item)
+    // navigation.navigate('visitorItems')
   };
 
   return (
     <View style={styles.container}>
       <NavigationEvents 
           onWillBlur={onWillBlur}
-          // onWillFocus={fetchItems}
-      />
+          onWillFocus={fetchItems}/>
       <Spacer>
       <Text h3 style={styles.titleText}>
-        {" " + UtilContext.state.visitorData.first_name} 
-        {" " + UtilContext.state.visitorData.last_name} 
+        Editar Objeto
       </Text>
       <Text style={styles.subtitleText}>
-        Aqui se muestran los Objetos que pertenecen al visitante
-      </Text>
+        Por ahora solo se pueden cambiar los estados perdido/encontrado</Text>
       </Spacer>
-      {/* {state.getDataSuccess  && state.data? 
+      {state.getDataSuccess  && state.data? 
         <FlatList
           data={state.data}
           keyExtractor={item => item.id}
@@ -76,7 +73,7 @@ const VisitorItemList = ({navigation}) => {
           <>
             <Text style={styles.errorMessage}>No se encontraron objetos de este visitante</Text>
           </>
-      : null} */}
+      : null}
       </View>
   );
 }
@@ -91,6 +88,11 @@ const styles = StyleSheet.create({
   subtitleText: {
     color: "gray",
     
+},
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
   },
   loading: {
     padding: 10,
@@ -107,4 +109,4 @@ const styles = StyleSheet.create({
 })
 
 
-export default VisitorItemList;
+export default VisitorsList;

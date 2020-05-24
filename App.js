@@ -18,6 +18,7 @@ import scannerScreen from './src/screens/scannerScreen';
 import searchItemScreem from './src/screens/searchItemScreem';
 import visitorsListScreenItems from './src/screens/visitorsListItemScreen';
 import visitorItemsScreen from './src/screens/visitorItemsScreem';
+import editItemScreen from './src/screens/editItemScreen';
 
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
@@ -48,6 +49,7 @@ const switchNavigator = createSwitchNavigator({
             searchItem: searchItemScreem,
             visitorListItem: visitorsListScreenItems,
             visitorItems: visitorItemsScreen,
+            editItem: editItemScreen,
             }),
             navigationOptions: {
               drawerLabel: "Buscar objeto"

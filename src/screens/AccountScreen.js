@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import { StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import { Button } from 'react-native-elements';
 import {SafeAreaView} from 'react-navigation';
-import { Ionicons } from '@expo/vector-icons';
 
 import { Context as AuthContext } from '../context/AuthContext';
 import MainFlowHeader  from '../components/MainFlowHeader';
