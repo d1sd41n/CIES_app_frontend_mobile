@@ -14,12 +14,6 @@ const VisitorsList = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
   const {state, getData, clearErrorMessage } = useContext(GetDataContext);
   console.log(UtilContext)
-  const fetchItems = async () => {
-    let visitor_dni= UtilContext.state.visitorData.dni;
-    const company_id = await AsyncStorage.getItem('company_id');
-    let url = '/items/companies/' + company_id + '/items/?search=' + visitor_dni;
-    getData(url);
-  };
 
   const  onWillBlur = () => {
     clearErrorMessage()
@@ -35,7 +29,8 @@ const VisitorsList = ({navigation}) => {
     <View style={styles.container}>
       <NavigationEvents 
           onWillBlur={onWillBlur}
-          onWillFocus={fetchItems}/>
+          // onWillFocus={fetchItems}
+          />
       <Spacer>
       <Text h3 style={styles.titleText}>
         Editar Objeto
@@ -43,7 +38,7 @@ const VisitorsList = ({navigation}) => {
       <Text style={styles.subtitleText}>
         Por ahora solo se pueden cambiar los estados perdido/encontrado</Text>
       </Spacer>
-      {state.getDataSuccess  && state.data? 
+      {/* {state.getDataSuccess  && state.data? 
         <FlatList
           data={state.data}
           keyExtractor={item => item.id}
@@ -73,7 +68,7 @@ const VisitorsList = ({navigation}) => {
           <>
             <Text style={styles.errorMessage}>No se encontraron objetos de este visitante</Text>
           </>
-      : null}
+      : null} */}
       </View>
   );
 }

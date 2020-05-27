@@ -23,7 +23,7 @@ const VisitorItemList = ({navigation}) => {
 
   const  onWillBlur = () => {
     clearErrorMessage()
-    UtilContext.delVisitorData()
+    // UtilContext.delVisitorData()
   }
 
   const seeItem =  ({item}) => {
@@ -35,7 +35,7 @@ const VisitorItemList = ({navigation}) => {
     <View style={styles.container}>
       <NavigationEvents 
           onWillBlur={onWillBlur}
-          // onWillFocus={fetchItems}
+          onWillFocus={fetchItems}
       />
       <Spacer>
       <Text h3 style={styles.titleText}>
@@ -46,7 +46,7 @@ const VisitorItemList = ({navigation}) => {
         Aqui se muestran los Objetos que pertenecen al visitante
       </Text>
       </Spacer>
-      {/* {state.getDataSuccess  && state.data? 
+      {state.getDataSuccess  && state.data? 
         <FlatList
           data={state.data}
           keyExtractor={item => item.id}
@@ -76,7 +76,7 @@ const VisitorItemList = ({navigation}) => {
           <>
             <Text style={styles.errorMessage}>No se encontraron objetos de este visitante</Text>
           </>
-      : null} */}
+      : null}
       </View>
   );
 }
