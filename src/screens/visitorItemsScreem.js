@@ -6,12 +6,14 @@ import { EvilIcons } from '@expo/vector-icons';
 import Spacer from '../components/Spacer';
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';
+import { Context as PutPatchDataContext} from '../context/PutPatchDataContext';
 import { ListItem, Text, } from "react-native-elements";
 import { NavigationEvents } from 'react-navigation';
 
 
 const VisitorItemList = ({navigation}) => {
   const UtilContext = useContext(ExtraUtilContext);
+  const PutPatchContext = useContext(PutPatchDataContext);
   const {state, getData, clearErrorMessage } = useContext(GetDataContext);
 
   const fetchItems = async () => {
@@ -27,7 +29,7 @@ const VisitorItemList = ({navigation}) => {
   }
 
   const seeItem =  ({item}) => {
-    UtilContext.saveData(item);
+    PutPatchContext.saveData(item);
     navigation.navigate('editItem')
   };
 

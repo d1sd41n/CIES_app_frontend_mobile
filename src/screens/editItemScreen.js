@@ -1,36 +1,26 @@
-import React, { useContext, useEffect } from 'react';
-import { FlatList, StyleSheet, View, AsyncStorage,
-        ActivityIndicator, Alert, TouchableHighlight } from 'react-native';
-import { EvilIcons } from '@expo/vector-icons';
+import React, {useState, useContext, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator, Alert} from 'react-native';
+import { Text, Input, FormLabel, FormInput,} from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
+import { NavigationEvents } from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+import { Context as PutPatchDataContext} from '../context/PutPatchDataContext';
 
 import Spacer from '../components/Spacer';
-import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
-import { Context as GetDataContext} from '../context/GetDataContext';
-import { ListItem, SearchBar, Button, Text,  } from "react-native-elements";
-import { NavigationEvents } from 'react-navigation';
 
 
-const VisitorsList = ({navigation}) => {
-  const UtilContext = useContext(ExtraUtilContext);
-  const {state, getData, clearErrorMessage } = useContext(GetDataContext);
-  console.log(UtilContext)
+const ItemRegister = ({navigation}) => {
+  const {state, patchData, clearErrorMessage } = useContext(PutPatchDataContext);
 
   const  onWillBlur = () => {
-    clearErrorMessage()
   }
 
-  const seeItem =  ({item}) => {
-    UtilContext.saveData(item);
-    console.log(item)
-    // navigation.navigate('visitorItems')
-  };
-
-  return (
-    <View style={styles.container}>
-      <NavigationEvents 
-          onWillBlur={onWillBlur}
-          // onWillFocus={fetchItems}
-          />
+  console.log(state)
+    return (
+      <View >
+        <NavigationEvents 
+          onWillBlur={onWillBlur}/>
       <Spacer>
       <Text h3 style={styles.titleText}>
         Editar Objeto
@@ -38,70 +28,88 @@ const VisitorsList = ({navigation}) => {
       <Text style={styles.subtitleText}>
         Por ahora solo se pueden cambiar los estados perdido/encontrado</Text>
       </Spacer>
-      {/* {state.getDataSuccess  && state.data? 
-        <FlatList
-          data={state.data}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
-            return (
-              <TouchableHighlight
-                onPress={() =>seeItem({item})}
-                >
-                <View style={{backgroundColor: 'white'}}>
-                  <ListItem
-                          roundAvatar
-                          title={`${item.type_item}`}
-                          subtitle={`Marca: ${item.brand}`}
-                          rightIcon={<EvilIcons name="pencil" size={30} color="black" />}
-                        />
-                </View>
-              </TouchableHighlight>
-              )
-            }}
-        />
-      : state.loading  ?
-          <>
-            <Text style={styles.loading}>Buscando datos en el servidor</Text>
-            <ActivityIndicator size="large" color="#0000ff" />
-          </>
-      : state.error ?
-          <>
-            <Text style={styles.errorMessage}>No se encontraron objetos de este visitante</Text>
-          </>
+      <Text style={styles.label}>
+        Nombre:
+      </Text>
+      <Input 
+          
+          inputStyle={styles.input}
+          placeholder='Color'
+          value="Hola"
+          onChangeText={(newColor) => setColor(newColor)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          disabled={true}
+          />
+      <Text style={styles.label}>
+        Nombre:
+      </Text>
+      <Input 
+          
+          inputStyle={styles.input}
+          placeholder='Color'
+          value="Hola"
+          onChangeText={(newColor) => setColor(newColor)}
+          autoCapitalize="none"
+          autoCorrect={false}
+          disabled={true}
+          />
+      <Spacer />
+
+      {/* {state.loading ?
+        <>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={styles.loadingText}>Registrando objeto</Text>
+          <Spacer />
+        </>
+        : null}
+      {state.errorMessage ? 
+        <>
+          <GetErrorMessages data={state.errorMessage} />
+          <Spacer />
+        </>
+        : null}
+      {state.postSuccess ? 
+        <>
+          <Text style={styles.postSuccess}>El objeto ha sido registrado con exito</Text>
+          <Spacer />
+        </>
       : null} */}
+      <Spacer />
       </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-  },
-  titleText: {
-    fontSize: 15,
-  },
   subtitleText: {
-    color: "gray",
-    
-},
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
+      color: "gray"
   },
-  loading: {
-    padding: 10,
-    fontSize: 18,
-    textAlign: 'center',
-    color: "blue",
+  label: {
+    marginTop: 10,
+    color: "black",
+    marginHorizontal: 16
   },
   errorMessage: {
-    padding: 10,
-    fontSize: 18,
-    textAlign: 'center',
+    fontSize: 16,
     color: 'red'
   },
-})
+  loadingText: {
+    color: "blue",
+    textAlign: 'center'
+  },
+  postSuccess: {
+    color: "green",
+    textAlign: 'center'
+  },
+  input: {
+    marginHorizontal: 16,
+  },
+  buttonItems:  {
+    marginLeft: 5,
+    marginRight: 5,
+    borderRadius: 10,
+    backgroundColor: 'black'
+   }
+});
 
-
-export default VisitorsList;
+export default ItemRegister;

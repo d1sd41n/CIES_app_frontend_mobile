@@ -18,13 +18,15 @@ const authReducer = (state, action) => {
             return {...state, loading: false, getDataSuccess: false, error: true, data: null};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, getSuccess: false, data: null,};
+        case 'saveData':
+            return {...state, data: action.payload};
         default:
             return state;
     }
 
 }
 
-const getData  = (dispatch) =>  async(url) => {
+const patchData  = (dispatch) =>  async(url) => {
 
     let token = await AsyncStorage.getItem('token');
     dispatch({type: 'loading'});
@@ -71,13 +73,14 @@ const clearErrorMessage = dispatch => () => {
     dispatch({type: 'clear_error_message'})
 };
 
-const clearErrorMessage = dispatch => () => {
-    dispatch({type: 'clear_error_message'})
+const saveData = dispatch => (data) => {
+    dispatch({type: 'saveData', payload: data});
 };
+
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    {clearErrorMessage, getData},
+    {clearErrorMessage, patchData, saveData},
     {   loading: false,
         getDataSuccess: false,
         data: null,

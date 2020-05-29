@@ -25,6 +25,7 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import { Provider as PostRequestProvider } from './src/context/PostRequestContext';
 import { Provider as ExtraUtilContext } from './src/context/ExtraUtilContext';
 import { Provider as GetDataProvider } from './src/context/GetDataContext';
+import { Provider as PutPatchDataProvider } from './src/context/PutPatchDataContext';
 
 import { setNavigator } from './src/navigationRef';
 
@@ -111,14 +112,16 @@ const App = createAppContainer(switchNavigator);
 
 export default() => {
   return(
-    <GetDataProvider>
-      <ExtraUtilContext>
-        <PostRequestProvider>
-          <AuthProvider>
-            <App ref={(navigator) => { setNavigator(navigator) }}/>
-          </AuthProvider>
-        </PostRequestProvider>
-      </ExtraUtilContext>
-    </GetDataProvider>
+    <PutPatchDataProvider>
+      <GetDataProvider>
+        <ExtraUtilContext>
+          <PostRequestProvider>
+            <AuthProvider>
+              <App ref={(navigator) => { setNavigator(navigator) }}/>
+            </AuthProvider>
+          </PostRequestProvider>
+        </ExtraUtilContext>
+      </GetDataProvider>
+    </PutPatchDataProvider>
   )
 }
