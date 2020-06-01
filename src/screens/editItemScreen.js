@@ -15,7 +15,14 @@ const ItemRegister = ({navigation}) => {
   const  onWillBlur = () => {
   }
 
-  console.log(state)
+  const editItem = async (data) => {
+    let company_id = await AsyncStorage.getItem('company_id');
+    let seat_id = await AsyncStorage.getItem('seat_id');
+    let url = "/items/companies/" + company_id + "/items/" + state.data.id + "/";
+    patchData(url, data);
+  }
+
+  // console.log(state)
     return (
       <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
           keyboardShouldPersistTaps='handled'>
@@ -28,7 +35,7 @@ const ItemRegister = ({navigation}) => {
       <Text style={styles.subtitleText}>
         Por ahora solo se pueden cambiar los estados perdido/encontrado</Text>
       </Spacer>
-      <Text style={styles.label}>
+      {/* <Text style={styles.label}>
         Propietario:
       </Text>
       <Input 
@@ -65,7 +72,7 @@ const ItemRegister = ({navigation}) => {
           autoCapitalize="none"
           autoCorrect={false}
           disabled={true}
-      />
+      /> */}
       <Text style={styles.label}>
         Estado:
       </Text>
@@ -108,42 +115,38 @@ const ItemRegister = ({navigation}) => {
           autoCorrect={false}
           disabled={true}
       />
-      {state.data.lost  ? 
-          <Button
-          buttonStyle={styles.buttonLost}
-          title="Cambiar estado a Encontrado"
-          onPress={() =>{
-          }}
-        />
-      : 
-      <Button
-      buttonStyle={styles.buttonNotLost}
-      title="Cambiar estado a Perdido"
-      onPress={() =>{
-        
-      }}
-    />
-      }
-
-      {/* {state.loading ?
+      {state.loading ?
         <>
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Registrando objeto</Text>
+          <Text style={styles.loadingText}>Gambiando estado de objeto</Text>
           <Spacer />
         </>
         : null}
       {state.errorMessage ? 
         <>
-          <GetErrorMessages data={state.errorMessage} />
+          <Text >Errrorrrr</Text>
           <Spacer />
         </>
         : null}
-      {state.postSuccess ? 
+      {state.patchDataSuccess ? 
         <>
-          <Text style={styles.postSuccess}>El objeto ha sido registrado con exito</Text>
+          <Text style={styles.postSuccess}>los cambios se han realizado con extio</Text>
           <Spacer />
         </>
-      : null} */}
+      : null}
+      {state.data.lost  ? 
+          <Button
+          buttonStyle={styles.buttonLost}
+          title="Cambiar estado a Encontrado"
+          onPress={(id=state.data.id) =>{editItem({lost: false})}}
+        />
+      : 
+        <Button
+        buttonStyle={styles.buttonNotLost}
+        title="Cambiar estado a Perdido"
+        onPress={() =>{editItem({lost: true})}}
+      />
+      }
       <Spacer />
       </KeyboardAwareScrollView>
     );
