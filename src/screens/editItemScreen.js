@@ -13,12 +13,14 @@ const ItemRegister = ({navigation}) => {
   const {state, patchData, clearErrorMessage } = useContext(PutPatchDataContext);
 
   const  onWillBlur = () => {
+    clearErrorMessage();
   }
 
   const editItem = async (data) => {
     let company_id = await AsyncStorage.getItem('company_id');
     let seat_id = await AsyncStorage.getItem('seat_id');
     let url = "/items/companies/" + company_id + "/items/" + state.data.id + "/";
+    // let url = "/items/companies/" + company_id + "/items/" + 24 + "/";
     patchData(url, data);
   }
 
@@ -35,7 +37,7 @@ const ItemRegister = ({navigation}) => {
       <Text style={styles.subtitleText}>
         Por ahora solo se pueden cambiar los estados perdido/encontrado</Text>
       </Spacer>
-      {/* <Text style={styles.label}>
+      <Text style={styles.label}>
         Propietario:
       </Text>
       <Input 
@@ -72,7 +74,7 @@ const ItemRegister = ({navigation}) => {
           autoCapitalize="none"
           autoCorrect={false}
           disabled={true}
-      /> */}
+      />
       <Text style={styles.label}>
         Estado:
       </Text>
@@ -122,15 +124,16 @@ const ItemRegister = ({navigation}) => {
           <Spacer />
         </>
         : null}
-      {state.errorMessage ? 
+      {state.error ? 
         <>
-          <Text >Errrorrrr</Text>
+          <Text  style={styles.errorMessage}>Error! no se han podido efectuar los cambios</Text>
+          <Text  style={styles.errorMessage}>{state.errorMessage}</Text>
           <Spacer />
         </>
         : null}
       {state.patchDataSuccess ? 
         <>
-          <Text style={styles.postSuccess}>los cambios se han realizado con extio</Text>
+          <Text style={styles.postSuccess}>los cambios se han realizado con exito</Text>
           <Spacer />
         </>
       : null}
@@ -163,7 +166,8 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontSize: 16,
-    color: 'red'
+    color: 'red',
+    textAlign: 'center'
   },
   loadingText: {
     color: "blue",
@@ -180,11 +184,13 @@ const styles = StyleSheet.create({
   lostInput: {
     marginHorizontal: 16,
     marginBottom: -2,
+    fontWeight:'bold',
     color: "red"
   },
   notLostInput: {
     marginHorizontal: 16,
     marginBottom: -2,
+    fontWeight:'bold',
     color: "green"
   },
   buttonLost:  {

@@ -11,13 +11,13 @@ import axios from 'axios';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'loading':
-            return {...state, loading: true, patchDataSuccess: false, error: false};
+            return {...state, loading: true, patchDataSuccess: false, error: false, errorMessage: ""};
         case 'patchDataSuccess':
-            return {...state, loading: false, patchDataSuccess: true, data: action.payload, error: false};
+            return {...state, loading: false, patchDataSuccess: true, data: action.payload, error: false, errorMessage: ""};
         case 'error':
-            return {...state, loading: false, patchDataSuccess: false, error: true};
+            return {...state, loading: false, patchDataSuccess: false, error: true, errorMessage: action.payload};
         case 'clear_error_message':
-            return {...state, errorMessage: '', loading: false, getSuccess: false};
+            return {...state, errorMessage: '', loading: false, patchDataSuccess: false, errorMessage: "", error: false};
         case 'saveData':
             return {...state, data: action.payload};
         default:
@@ -30,10 +30,6 @@ const patchData  = (dispatch) =>  async(url, data) => {
 
     let token = await AsyncStorage.getItem('token');
     dispatch({type: 'loading'});
-    console.log("###################")
-    console.log(11111111, data, url);
-    console.log("###################")
-    data = {"lost": true}
 
     const headers = {
         'Content-Type': 'application/json',
@@ -42,21 +38,13 @@ const patchData  = (dispatch) =>  async(url, data) => {
         };
     axios.patch(backendUrl + url, data, {headers})
         .then(res => {
-            // dispatch({type: 'post_success'});
-            console.log("%%%%%%%%%%%%%%%%%%%%%")
-            console.log(res.data)
-            console.log("%%%%%%%%%%%%%%%%%%%%%")
-
-            // console.log(res.data)
             dispatch({type: 'patchDataSuccess', payload: res.data});
-        
         })
         .catch(err => {
             let error = err.response.data;
-            console.log("/////////////////////")
-            console.log(error)
-            console.log("/////////////////////")
-            dispatch({type: 'error'});
+            if (error == null)
+                error = "";
+            dispatch({type: 'error', payload: error});
         })
 }
 
@@ -76,5 +64,6 @@ export const { Provider, Context } = createDataContext(
         patchDataSuccess: false,
         data: null,
         error: false,
+        errorMessage: "",
     }
 );
