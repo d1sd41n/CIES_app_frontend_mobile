@@ -20,7 +20,6 @@ const ItemRegister = ({navigation}) => {
     let company_id = await AsyncStorage.getItem('company_id');
     let seat_id = await AsyncStorage.getItem('seat_id');
     let url = "/items/companies/" + company_id + "/items/" + state.data.id + "/";
-    // let url = "/items/companies/" + company_id + "/items/" + 24 + "/";
     patchData(url, data);
   }
 
