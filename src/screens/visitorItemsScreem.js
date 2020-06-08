@@ -24,13 +24,13 @@ const VisitorItemList = ({navigation}) => {
   };
 
   const  onWillBlur = () => {
-    clearErrorMessage()
+    clearErrorMessage();
     // UtilContext.delVisitorData()
   }
 
   const seeItem =  ({item}) => {
     PutPatchContext.saveData(item);
-    navigation.navigate('editItem')
+    navigation.navigate('editItem');
   };
 
   return (

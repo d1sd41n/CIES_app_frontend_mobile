@@ -38,10 +38,9 @@ const registerVisitor = ({navigation}) => {
         <Spacer/>
         <Button
             buttonStyle={styles.buttonItems}
-            title="Escanear codigo Qr"
+            title="Buscar usando codigo QR"
             onPress={() =>{
-              clearErrorMessage()
-              deleteQr()
+              navigation.navigate('searchByQr');
             }}
           />
       </View>

@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, AsyncStorage,
-        ActivityIndicator, Alert, TouchableHighlight,
-        TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+        ActivityIndicator, Alert, TouchableHighlight} from 'react-native';
 
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as GetDataContext} from '../context/GetDataContext';

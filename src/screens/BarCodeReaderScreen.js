@@ -27,6 +27,8 @@ export default function BarCodeReader({navigation}) {
       navigation.navigate('itemRegister');
     else if(state.typeScan == 2)
       navigation.navigate('scanner1');
+      else if(state.typeScan == 3)
+      navigation.navigate('searchByQr');
   };
 
   const createTwoButtonAlert = () =>

@@ -1,6 +1,6 @@
-import React, {useState, useContext, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View, AsyncStorage, ActivityIndicator, Alert} from 'react-native';
-import { Text, Input, Button, FormInput,} from 'react-native-elements';
+import React, {useContext } from 'react';
+import { StyleSheet, AsyncStorage, ActivityIndicator} from 'react-native';
+import { Text, Input, Button,} from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -18,7 +18,6 @@ const ItemRegister = ({navigation}) => {
 
   const editItem = async (data) => {
     let company_id = await AsyncStorage.getItem('company_id');
-    let seat_id = await AsyncStorage.getItem('seat_id');
     let url = "/items/companies/" + company_id + "/items/" + state.data.id + "/";
     patchData(url, data);
   }
@@ -119,7 +118,7 @@ const ItemRegister = ({navigation}) => {
       {state.loading ?
         <>
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Gambiando estado de objeto</Text>
+          <Text style={styles.loadingText}>Buscando objeto en el servidor</Text>
           <Spacer />
         </>
         : null}
