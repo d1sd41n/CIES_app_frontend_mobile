@@ -2,7 +2,6 @@ import { AsyncStorage } from 'react-native';
 
 import {navigate} from '../navigationRef';
 import createDataContext from './createDataContext';
-// import backendUrl from "../../variables/backendURL.js";
 import backendUrl from "../variables/backendURL.js"
 
 import axios from 'axios';
@@ -11,15 +10,15 @@ import axios from 'axios';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'loading':
-            return {...state, loading: true, errorMessage: '', postSuccess: false};
+            return {...state, loading: true, errorMessage: '', postSuccess: false, error: false,};
         case 'add_error':
-            return {...state, errorMessage: action.payload, loading: false};
+            return {...state, errorMessage: action.payload, loading: false, error: true,};
         case 'post_success':
-             return {...state, errorMessage: '', loading: false, postSuccess: true};
+             return {...state, errorMessage: '', loading: false, postSuccess: true, error: false,};
         case 'get_res_data':
-             return {...state, errorMessage: '', loading: false, postSuccess: true, data: action.payload};
+             return {...state, errorMessage: '', loading: false, postSuccess: true, data: action.payload, error: false,};
         case 'clear_error_message':
-            return {...state, errorMessage: '', loading: false, postSuccess: false, data: null};
+            return {...state, errorMessage: '', loading: false, postSuccess: false, data: null, error: false,};
         default:
             return state;
     }
@@ -64,5 +63,6 @@ export const { Provider, Context } = createDataContext(
      loading: false,
      postSuccess: false,
      data: null,
+     error: false,
     }
 );

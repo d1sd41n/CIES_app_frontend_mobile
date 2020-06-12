@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { StyleSheet, View, ActivityIndicator,
          AsyncStorage, Alert, TouchableHighlight} from 'react-native';
 import { Text, Input, Button, ListItem} from 'react-native-elements';
@@ -7,7 +7,6 @@ import { NavigationEvents } from 'react-navigation';
 
 import Spacer from '../components/Spacer';
 import { Context } from '../context/GetDataContext';
-import GetErrorMessages from "../variables/dataFieldNames";
 import { Context as ExtraUtilContext} from '../context/ExtraUtilContext';
 import { Context as PutPatchDataContext} from '../context/PutPatchDataContext';
 
@@ -15,22 +14,24 @@ const registerVisitor = ({navigation}) => {
   const {state, clearErrorMessage, getData } = useContext(Context);
   const PutPatchContext = useContext(PutPatchDataContext);
 
-  console.log(state)
-
-
   const UtilContext = useContext(ExtraUtilContext);
   let qrHash = UtilContext.state.qrCodeHash;
   let deleteQr = UtilContext.deleteQrCodeHash;
 
   const  onWillBlur = () => {
-    clearErrorMessage()
-    deleteQr()
+    clearErrorMessage();
+    deleteQr();
+  }
+
+  const  onWillFocus = () => {
+    clearErrorMessage();
   }
 
   const seeItem =  () => {
-    // PutPatchContext.saveData(item);
-    // navigation.navigate('editItem');
-    console.log("333333333333333333")
+    let item = state.data[0];
+    PutPatchContext.saveData(item);
+    navigation.navigate('editItem');
+    
   };
 
   const searchItem = async () => {
@@ -42,7 +43,6 @@ const registerVisitor = ({navigation}) => {
     else{
       let company_id = await AsyncStorage.getItem('company_id');
       let url = "/items/companies/" + company_id + "/items/?search_code=" + qrHash;
-      console.log(url)
       getData(url);
     }
   };
@@ -61,7 +61,9 @@ const registerVisitor = ({navigation}) => {
   return (
     <View>
       <NavigationEvents 
-          onWillBlur={onWillBlur}/>
+          onWillBlur={onWillBlur}
+          onWillFocus={onWillFocus}/>
+          
       <Spacer>
       <Text h3>Buscar objeto usando codigo QR</Text>
       <Text style={styles.subtitleText}>Escanea el codigo Qr del objeto</Text>
@@ -70,7 +72,7 @@ const registerVisitor = ({navigation}) => {
       {state.loading ?
         <>
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Registrando el transito de este item</Text>
+          <Text style={styles.loadingText}>Buscando objeto en el servidor</Text>
         </>
       : null}
       <Button
@@ -107,13 +109,24 @@ const registerVisitor = ({navigation}) => {
           </Spacer>
           </View>
         </TouchableHighlight>
-      : null}
+      : state.error && state.errorStatus == 404 ?
+        <>
+          <Spacer>
+            <Text style={styles.errorMessage}>No encontrado: No hay ningun objeto con ese codigo</Text>
+          </Spacer>
+        </>
+      : state.error ?
+      <>
+        <Spacer>
+          <Text style={styles.errorMessage}>Ha ocurrido un error asegurese de tener conexion a internet</Text>
+        </Spacer>
+      </>
+      :null}
       <Button
         title="Buscar Objeto"
         onPress={searchItem}
         >
       </Button>
-      {state.errorMessage ? <GetErrorMessages data={state.errorMessage} />: null}
       </View>
   );
 }
@@ -130,17 +143,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'red'
   },
-  input: {
-    marginTop: 10,
-    marginHorizontal: 3
-  },
   loadingText: {
     color: "blue",
     textAlign: 'center'
-  },
-  postSuccess: {
-    color: "green",
-    fontSize: 25,
   },
   buttonItems:  {
     marginLeft: 5,
@@ -148,30 +153,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'black'
    },
-   listElem: {
-    backgroundColor: 'white',
-    marginTop: 10,
-    marginLeft: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: 'darkgray',
-    marginRight: 20,
-    paddingBottom: 10,
-  },
-  listElemText: {
-    fontSize: 18,
-  },
-  entra: {
-    fontSize: 18,
-    color: "purple"
-  },
-  sale: {
-    fontSize: 18,
-    color: "blue"
-  },
-  lost: {
-    color: "red",
-    fontSize: 22,
-  },
 });
 
 export default registerVisitor;

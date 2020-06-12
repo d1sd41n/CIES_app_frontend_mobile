@@ -1,33 +1,51 @@
-import React, {useContext } from 'react';
+import React, {useContext, useState } from 'react';
 import { StyleSheet, AsyncStorage, ActivityIndicator} from 'react-native';
 import { Text, Input, Button,} from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { Context as PutPatchDataContext} from '../context/PutPatchDataContext';
+import { Context as PostRequestContext} from '../context/PostRequestContext';
 
 import Spacer from '../components/Spacer';
 
 
 const ItemRegister = ({navigation}) => {
   const {state, patchData, clearErrorMessage } = useContext(PutPatchDataContext);
+  const PostRequest = useContext(PostRequestContext);
+
+  // this is for know if we have to show send email button
+  const [send_email, setTsend_email] = useState(false);
+
+  console.log(PostRequest) 
 
   const  onWillBlur = () => {
     clearErrorMessage();
   }
 
+  const  onWillFocus = () => {
+    setTsend_email(false);
+  }
+
   const editItem = async (data) => {
     let company_id = await AsyncStorage.getItem('company_id');
     let url = "/items/companies/" + company_id + "/items/" + state.data.id + "/";
+    if (!data.lost){
+      setTsend_email(true);
+    }
+    else{
+      setTsend_email(false);
+    }
+    console.log("send_email", send_email) 
     patchData(url, data);
   }
 
-  // console.log(state)
     return (
       <KeyboardAwareScrollView extraScrollHeight={100} enableOnAndroid={true} 
           keyboardShouldPersistTaps='handled'>
         <NavigationEvents 
-          onWillBlur={onWillBlur}/>
+          onWillBlur={onWillBlur}
+          onWillFocus={onWillFocus}/>
       <Spacer>
       <Text h3 style={styles.titleText}>
         Editar Objeto

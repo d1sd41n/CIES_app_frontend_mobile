@@ -11,11 +11,11 @@ import axios from 'axios';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'loading':
-            return {...state, loading: true, getDataSuccess: false, error: false, data: null};
+            return {...state, loading: true, getDataSuccess: false, error: false, data: null, errorStatus: null};
         case 'getDataSuccess':
-            return {...state, loading: false, getDataSuccess: true, data: action.payload, error: false};
+            return {...state, loading: false, getDataSuccess: true, data: action.payload, error: false, errorStatus: null};
         case 'error':
-            return {...state, loading: false, getDataSuccess: false, error: true, data: null};
+            return {...state, loading: false, getDataSuccess: false, error: true, data: null, errorStatus: action.payload};
 
         case 'loadingGetType':
             return {...state, loadingGetType: true, getTypeSuccess: false, typeDataError: false, typeData: null};
@@ -32,7 +32,7 @@ const authReducer = (state, action) => {
             return {...state, loadingGetBrand: false, getBrandSuccess: false, brandDataError: true, brandData: null};
 
         case 'clear_error_message':
-            return {...state, errorMessage: '', loading: false, getSuccess: false, data: null,};
+            return {...state, errorStatus: null, loading: false, getDataSuccess: false, data: null, error: false,};
         default:
             return state;
     }
@@ -106,7 +106,7 @@ const getData  = (dispatch) =>  async(url, type='') => {
                 dispatch({type: 'brandDataError'});
             }
             else{
-                dispatch({type: 'error'});
+                dispatch({type: 'error', payload: err.response.status});
             }
         })
 }
@@ -122,6 +122,7 @@ export const { Provider, Context } = createDataContext(
         getDataSuccess: false,
         data: null,
         error: false,
+        errorStatus: null,
 
         getTypeSuccess: false,
         typeData: null,
