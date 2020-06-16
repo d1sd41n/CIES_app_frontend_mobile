@@ -1,6 +1,4 @@
 import { AsyncStorage } from 'react-native';
-
-import {navigate} from '../navigationRef';
 import createDataContext from './createDataContext';
 import backendUrl from "../variables/backendURL.js"
 
@@ -15,7 +13,7 @@ const authReducer = (state, action) => {
             return {...state, errorMessage: action.payload, loading: false, error: true,};
         case 'post_success':
              return {...state, errorMessage: '', loading: false, postSuccess: true, error: false,};
-        case 'get_res_data':
+        case 'get_res_data': 
              return {...state, errorMessage: '', loading: false, postSuccess: true, data: action.payload, error: false,};
         case 'clear_error_message':
             return {...state, errorMessage: '', loading: false, postSuccess: false, data: null, error: false,};

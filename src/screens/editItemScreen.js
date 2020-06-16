@@ -17,15 +17,24 @@ const ItemRegister = ({navigation}) => {
   // this is for know if we have to show send email button
   const [send_email, setTsend_email] = useState(false);
 
-  console.log(PostRequest) 
-
   const  onWillBlur = () => {
     clearErrorMessage();
+    PostRequest.clearErrorMessage();
   }
 
   const  onWillFocus = () => {
     setTsend_email(false);
   }
+
+  const  sendEmail = async () => {
+    setTsend_email(false);
+    let company_id = await AsyncStorage.getItem('company_id');
+    let seat_id = await AsyncStorage.getItem('seat_id');
+    let url = "/emailing/companies/" + company_id + "/seats/" + seat_id + "/email/";
+    let data = {"id": state.data.id};
+    PostRequest.postData(data, url);
+  }
+
 
   const editItem = async (data) => {
     let company_id = await AsyncStorage.getItem('company_id');
@@ -133,13 +142,42 @@ const ItemRegister = ({navigation}) => {
           autoCorrect={false}
           disabled={true}
       />
+      {/* loading edit item */}
       {state.loading ?
         <>
           <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.loadingText}>Buscando objeto en el servidor</Text>
+          <Text style={styles.loadingText}>Guardando cambios</Text>
           <Spacer />
         </>
         : null}
+      {/* email */}
+      {PostRequest.state.loading ?
+        <>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text style={styles.loadingText}>Enviando Email</Text>
+          <Spacer />
+        </>
+      : PostRequest.state.postSuccess ? 
+        <>
+          <Text style={styles.postSuccess}>El email se ha enviado con exito</Text>
+          <Spacer />
+        </>
+      : PostRequest.state.error ?
+        <>
+        <Text  style={styles.errorMessage}>Error! no se ha podido enviar el email</Text>
+        <Text  style={styles.errorMessage}>{PostRequest.state.errorMessage}</Text>
+        <Spacer />
+        </>
+      : null}
+      {/* send email button*/}
+      {state.patchDataSuccess &&  send_email?
+        <Button
+        buttonStyle={styles.buttonLost}
+        title="Enviar Email"
+        onPress={sendEmail}
+      />
+        : null}
+      {/* Edit items responses*/}
       {state.error ? 
         <>
           <Text  style={styles.errorMessage}>Error! no se han podido efectuar los cambios</Text>
