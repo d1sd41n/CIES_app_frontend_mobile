@@ -1,10 +1,9 @@
-import React, {useEffect, useContext, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import { StyleSheet, TouchableOpacity, View, ActivityIndicator, AsyncStorage, FlatList, TouchableHighlight} from 'react-native';
 import { Text, Button} from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
 
-import Spacer from '../components/Spacer';
 import { Context as GetDataContext} from '../context/GetDataContext';
 
 

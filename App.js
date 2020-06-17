@@ -93,15 +93,6 @@ const switchNavigator = createSwitchNavigator({
               drawerLabel: "Ver historial"
             }
         },
-        // searchItemBuVisitor: {
-        //   screen: createStackNavigator({
-        //     visitorListItem: visitorsListScreenItems,
-        //     visitorItems: visitorItemsScreen,
-        //     }),
-        //     navigationOptions: {
-        //       drawerLabel: "Buscar objeto por Visitante"
-        //     }
-        // },
       },{
         initialRouteName: 'visitorRegister',
       }

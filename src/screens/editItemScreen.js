@@ -45,7 +45,6 @@ const ItemRegister = ({navigation}) => {
     else{
       setTsend_email(false);
     }
-    console.log("send_email", send_email) 
     patchData(url, data);
   }
 
