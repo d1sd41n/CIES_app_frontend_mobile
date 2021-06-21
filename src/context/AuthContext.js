@@ -42,7 +42,7 @@ const signin = (dispatch) =>  ({username, password}) => {
         'Content-Type': 'application/json',
         'Accept-Language': 'es-ES,es;q=0.8',
       };
-    axios.post('https://cies.tech/core/login_token/', { //send the login to the server
+    axios.post('http://YOUR_DOMAIN_BACKEND/core/login_token/', { //send the login to the server
         username: username,
         password: password
     }, {headers})

@@ -2,5 +2,5 @@ import axios from 'axios';
 
 
 export default axios.create({
-    baseURL: 'https://cies.tech/core/login_token/'
+    baseURL: 'http://YOUR_DOMAIN_BACKEND/core/login_token/'
 });
